@@ -25,6 +25,7 @@ import ThreeSumPage from './pages/ThreeSumPage';
 import ThreeSumWorkspace from './pages/ThreeSumWorkspace';
 import ContainerWithMostWaterPage from './pages/ContainerWithMostWaterPage';
 import ContainerWithMostWaterWorkspace from './pages/ContainerWithMostWaterWorkspace';
+import ContainerWithMostWaterLearningPage from './pages/ContainerWithMostWaterLearningPage';
 import AuthPage from './pages/AuthPage';
 import ProblemPlaceholder from './pages/ProblemPlaceholder';
 
@@ -67,6 +68,7 @@ export default function App() {
             <Route path="/problem/9" element={<ThreeSumPage />} />
             <Route path="/problem/9/visualize" element={<ThreeSumWorkspace />} />
             <Route path="/problem/10" element={<ContainerWithMostWaterPage />} />
+            <Route path="/problem/10/learn" element={<ContainerWithMostWaterLearningPage />} />
             <Route path="/problem/10/visualize" element={<ContainerWithMostWaterWorkspace />} />
             <Route path="/problem/:id" element={<ProblemPlaceholder />} />
           </Routes>          </div>
