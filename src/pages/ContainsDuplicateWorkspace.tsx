@@ -153,35 +153,6 @@ export default function ContainsDuplicateWorkspace() {
                   <strong className="text-white">Why it works:</strong> By checking all pairs, we're guaranteed to find any duplicate if it exists.
                 </p>
               </div>
-              <div className="mt-6 bg-black/30 rounded-2xl p-6">
-                <pre className="text-sm font-mono text-white/90 overflow-x-auto">
-                  <code>{`class Solution {
-public:
-    bool containsDuplicate(vector<int>& nums) {
-        for (int i = 0; i < nums.size(); i++) {
-            for (int j = i + 1; j < nums.size(); j++) {
-                if (nums[i] == nums[j]) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-};`}</code>
-                </pre>
-              </div>
-              <div className="mt-6 grid md:grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Time Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(n²)</div>
-                  <div className="text-sm text-white/60 mt-2">Two nested loops</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Space Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(1)</div>
-                  <div className="text-sm text-white/60 mt-2">No extra space</div>
-                </div>
-              </div>
             </div>
           )}
 
@@ -202,36 +173,6 @@ public:
                   <strong className="text-white">Trade-off:</strong> This is faster than brute force O(n²) but requires sorting which takes O(n log n) time.
                 </p>
               </div>
-              <div className="mt-6 bg-black/30 rounded-2xl p-6">
-                <pre className="text-sm font-mono text-white/90 overflow-x-auto">
-{`class Solution {
-public:
-    bool containsDuplicate(vector<int>& nums) {
-        sort(nums.begin(), nums.end());
-        
-        for (int i = 1; i < nums.size(); i++) {
-            if (nums[i] == nums[i - 1]) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-};`}
-                </pre>
-              </div>
-              <div className="mt-6 grid md:grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Time Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(n log n)</div>
-                  <div className="text-sm text-white/60 mt-2">Sorting + one pass</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Space Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(1)</div>
-                  <div className="text-sm text-white/60 mt-2">In-place sorting</div>
-                </div>
-              </div>
             </div>
           )}
 
@@ -251,38 +192,6 @@ public:
                 <p>
                   <strong className="text-white">Why it's optimal:</strong> We only need one pass through the array, and each lookup/insert is O(1) on average. Total time: O(n).
                 </p>
-              </div>
-              <div className="mt-6 bg-black/30 rounded-2xl p-6">
-                <pre className="text-sm font-mono text-white/90 overflow-x-auto">
-{`class Solution {
-public:
-    bool containsDuplicate(vector<int>& nums) {
-        unordered_set<int> seen;
-        
-        for (int i = 0; i < nums.size(); i++) {
-            if (seen.find(nums[i]) != seen.end()) {
-                return true;
-            }
-            
-            seen.insert(nums[i]);
-        }
-        
-        return false;
-    }
-};`}
-                </pre>
-              </div>
-              <div className="mt-6 grid md:grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Time Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(n) average</div>
-                  <div className="text-sm text-white/60 mt-2">One pass with O(1) lookups</div>
-                </div>
-                <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                  <div className="text-sm text-white/60 mb-2">Space Complexity</div>
-                  <div className="text-2xl font-bold text-white">O(n)</div>
-                  <div className="text-sm text-white/60 mt-2">Hash set storage</div>
-                </div>
               </div>
             </div>
           )}
