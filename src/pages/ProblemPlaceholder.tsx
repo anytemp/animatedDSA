@@ -82,7 +82,7 @@ export default function ProblemPlaceholder() {
             <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${difficultyColors[problem.difficulty]}`}>
               {problem.difficulty}
             </span>
-            <span className="text-xs text-white/60">{problem.topic}</span>
+            <span className="text-xs text-white/60">{problem.category}</span>
             <span className="text-white/20">·</span>
             <span className="text-xs text-lavender font-mono">{problem.pattern}</span>
           </div>
@@ -154,8 +154,8 @@ export default function ProblemPlaceholder() {
           <h3 className="font-sans text-lg font-semibold text-white mb-4">Problem Details</h3>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Topic</span>
-              <span className="text-sm text-white/90 font-medium">{problem.topic}</span>
+              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Category</span>
+              <span className="text-sm text-white/90 font-medium">{problem.category}</span>
             </div>
             <div className="flex items-center gap-3">
               <span className="text-xs font-semibold text-white/40 uppercase tracking-wider">Pattern</span>

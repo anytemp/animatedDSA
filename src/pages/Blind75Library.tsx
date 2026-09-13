@@ -2,13 +2,13 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Search, X, ArrowRight, Filter, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { TOPICS, type Problem } from '../data/problems';
+import { CATEGORIES, type Problem } from '../data/problems';
 import { useProblems } from '../context/ProblemContext';
 
 export default function Blind75Library() {
   const { problems, completedCount } = useProblems();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedTopic, setSelectedTopic] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
   const [selectedStatus, setSelectedStatus] = useState<string>('All');
 
@@ -17,11 +17,11 @@ export default function Blind75Library() {
       // Search filter
       const matchesSearch = searchQuery === '' || 
         problem.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        problem.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        problem.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
         problem.pattern.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Topic filter
-      const matchesTopic = selectedTopic === 'All' || problem.topic === selectedTopic;
+      // Category filter
+      const matchesCategory = selectedCategory === 'All' || problem.category === selectedCategory;
 
       // Difficulty filter
       const matchesDifficulty = selectedDifficulty === 'All' || problem.difficulty === selectedDifficulty;
@@ -29,15 +29,15 @@ export default function Blind75Library() {
       // Status filter
       const matchesStatus = selectedStatus === 'All' || problem.status === selectedStatus;
 
-      return matchesSearch && matchesTopic && matchesDifficulty && matchesStatus;
+      return matchesSearch && matchesCategory && matchesDifficulty && matchesStatus;
     });
-  }, [problems, searchQuery, selectedTopic, selectedDifficulty, selectedStatus]);
+  }, [problems, searchQuery, selectedCategory, selectedDifficulty, selectedStatus]);
 
-  const hasActiveFilters = searchQuery !== '' || selectedTopic !== 'All' || selectedDifficulty !== 'All' || selectedStatus !== 'All';
+  const hasActiveFilters = searchQuery !== '' || selectedCategory !== 'All' || selectedDifficulty !== 'All' || selectedStatus !== 'All';
 
   const resetFilters = () => {
     setSearchQuery('');
-    setSelectedTopic('All');
+    setSelectedCategory('All');
     setSelectedDifficulty('All');
     setSelectedStatus('All');
   };
@@ -124,15 +124,15 @@ export default function Blind75Library() {
 
             {/* Filters */}
             <div className="flex flex-wrap gap-3">
-              {/* Topic Filter */}
+              {/* Category Filter */}
               <select
-                value={selectedTopic}
-                onChange={(e) => setSelectedTopic(e.target.value)}
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
                 className="px-4 py-3 bg-white border border-border rounded-xl text-sm text-text-primary focus:outline-none focus:border-lavender focus:ring-2 focus:ring-lavender/20 transition-all cursor-pointer"
               >
-                <option value="All">All Topics</option>
-                {TOPICS.map(topic => (
-                  <option key={topic} value={topic}>{topic}</option>
+                <option value="All">All Categories</option>
+                {CATEGORIES.map(category => (
+                  <option key={category} value={category}>{category}</option>
                 ))}
               </select>
 
@@ -245,7 +245,7 @@ function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
 
       <div className="flex items-center gap-3 mt-auto">
         <div className="flex items-center gap-1.5">
-          <span className="text-xs text-text-secondary">{problem.topic}</span>
+          <span className="text-xs text-text-secondary">{problem.category}</span>
         </div>
         <span className="text-border">·</span>
         <span className="text-xs text-text-light font-mono">{problem.pattern}</span>

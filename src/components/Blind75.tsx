@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 interface Problem {
   number: string;
   name: string;
-  topic: string;
+  category: string;
   pattern: string;
   difficulty: 'Easy' | 'Medium' | 'Hard';
 }
 
 const problems: Problem[] = [
-  { number: '01', name: 'Two Sum', topic: 'Array', pattern: 'Hash Map', difficulty: 'Easy' },
-  { number: '02', name: 'Best Time to Buy and Sell Stock', topic: 'Array', pattern: 'Sliding Window', difficulty: 'Easy' },
-  { number: '03', name: 'Contains Duplicate', topic: 'Array', pattern: 'Hash Set', difficulty: 'Easy' },
-  { number: '04', name: 'Product of Array Except Self', topic: 'Array', pattern: 'Prefix / Suffix', difficulty: 'Medium' },
-  { number: '05', name: 'Valid Anagram', topic: 'String', pattern: 'Hash Map', difficulty: 'Easy' },
-  { number: '06', name: 'Group Anagrams', topic: 'String', pattern: 'Hash Map', difficulty: 'Medium' },
+  { number: '01', name: 'Two Sum', category: 'Array', pattern: 'Hash Map', difficulty: 'Easy' },
+  { number: '02', name: 'Best time to buy and sell stock', category: 'Array', pattern: 'Sliding Window', difficulty: 'Easy' },
+  { number: '03', name: 'Contains Duplicate', category: 'Array', pattern: 'Hash Set', difficulty: 'Easy' },
+  { number: '04', name: 'Product of Array Except Self', category: 'Array', pattern: 'Prefix / Suffix', difficulty: 'Medium' },
+  { number: '05', name: "Kadane's Algorithm, maximum subarray sum", category: 'Array', pattern: "Kadane's", difficulty: 'Medium' },
+  { number: '06', name: 'Maximum Product Subarray in an Array', category: 'Array', pattern: 'Dynamic Programming', difficulty: 'Medium' },
 ];
 
 const difficultyColors = {
@@ -25,7 +25,7 @@ const difficultyColors = {
   Hard: 'text-rose-700 bg-rose-50 border-rose-200/50',
 };
 
-const topicIcons: Record<string, typeof Hash> = {
+const categoryIcons: Record<string, typeof Hash> = {
   Array: Hash,
   String: Layers,
 };
@@ -106,7 +106,7 @@ export default function Blind75() {
 }
 
 function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
-  const Icon = topicIcons[problem.topic] || Hash;
+  const Icon = categoryIcons[problem.category] || Hash;
   const problemId = parseInt(problem.number);
 
   return (
@@ -134,7 +134,7 @@ function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
         <div className="flex items-center gap-3 mt-auto">
           <div className="flex items-center gap-1.5">
             <Icon size={12} className="text-text-light" />
-            <span className="text-xs text-text-secondary">{problem.topic}</span>
+            <span className="text-xs text-text-secondary">{problem.category}</span>
           </div>
           <span className="text-border">·</span>
           <span className="text-xs text-text-light font-mono">{problem.pattern}</span>
