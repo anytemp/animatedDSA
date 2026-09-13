@@ -94,17 +94,17 @@ public:
 
 **Pseudocode:**
 ```
-cp = sp[0]
-max_profit = 0
+minPrice = prices[0]
+bestProfit = 0
 
-for each index i in sp:
-    if sp[i] < cp:
-        cp = sp[i]
+for each day from 0 to n-1:
+    if prices[day] < minPrice:
+        minPrice = prices[day]
     
-    profit = sp[i] - cp
-    max_profit = max(max_profit, profit)
+    currentProfit = prices[day] - minPrice
+    bestProfit = max(bestProfit, currentProfit)
 
-return max_profit
+return bestProfit
 ```
 
 **Complexity:**

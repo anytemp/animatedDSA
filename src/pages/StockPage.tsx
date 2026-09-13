@@ -122,7 +122,7 @@ export default function StockPage() {
                 <span className="text-gray-400">·</span>
                 <span className="text-base font-medium text-emerald-600">Easy</span>
               </div>
-              <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6">
+              <h1 className="font-sans text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-6">
                 Best Time to Buy and Sell Stock
               </h1>
             </div>
@@ -174,14 +174,14 @@ export default function StockPage() {
 
           {/* Problem Description */}
           <div className="space-y-6">
-            <p className="text-2xl text-gray-900 leading-relaxed">
-              You are given an array <code className="font-mono text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg text-2xl">prices</code> where <code className="font-mono text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg text-2xl">prices[i]</code> is the price of a given stock on the <span className="font-semibold">ith day</span>.
+            <p className="text-3xl text-gray-900 leading-relaxed">
+              You are given an array <code className="font-mono text-blue-600 bg-blue-50 px-4 py-2 rounded-lg text-3xl">prices</code> where <code className="font-mono text-blue-600 bg-blue-50 px-4 py-2 rounded-lg text-3xl">prices[i]</code> is the price of a given stock on the <span className="font-semibold">ith day</span>.
             </p>
-            <p className="text-xl text-gray-700 leading-relaxed">
+            <p className="text-2xl text-gray-700 leading-relaxed">
               You want to maximize your profit by choosing a <span className="font-semibold text-gray-900">single day to buy</span> one stock and choosing a <span className="font-semibold text-gray-900">different day in the future to sell</span> that stock.
             </p>
-            <p className="text-xl text-gray-700 leading-relaxed">
-              Return the <span className="font-semibold text-gray-900">maximum profit</span> you can achieve from this transaction. If you cannot achieve any profit, return <code className="font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded-lg text-xl">0</code>.
+            <p className="text-2xl text-gray-700 leading-relaxed">
+              Return the <span className="font-semibold text-gray-900">maximum profit</span> you can achieve from this transaction. If you cannot achieve any profit, return <code className="font-mono text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg text-2xl">0</code>.
             </p>
           </div>
         </motion.div>

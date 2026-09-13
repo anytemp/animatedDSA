@@ -184,10 +184,10 @@ export default function StockWorkspace() {
               </p>
               <div className="space-y-3 text-base text-white/70 leading-relaxed">
                 <p>
-                  <strong className="text-white">Intuition:</strong> As we iterate through the array, we maintain the cheapest buying price (cp). At each day, we calculate the profit if we sell today using cp.
+                  <strong className="text-white">Intuition:</strong> As we iterate through the array, we maintain the cheapest buying price (minPrice). At each day, we calculate the profit if we sell today using minPrice.
                 </p>
                 <p>
-                  <strong className="text-white">How it works:</strong> If today's price is lower than cp, update cp. Otherwise, calculate profit = sp[i] - cp and update max_profit if this profit is better.
+                  <strong className="text-white">How it works:</strong> If today's price is lower than minPrice, update minPrice. Otherwise, calculate currentProfit = prices[day] - minPrice and update bestProfit if this profit is better.
                 </p>
                 <p>
                   <strong className="text-white">Why it's optimal:</strong> We only need one pass through the array and constant extra space. Time: O(n), Space: O(1).
