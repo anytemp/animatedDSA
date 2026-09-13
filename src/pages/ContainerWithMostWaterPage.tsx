@@ -16,7 +16,8 @@ export default function ContainerWithMostWaterPage() {
   const [isCompleted, setIsCompleted] = useState(problem?.status === 'Completed');
   const [selectedLeft, setSelectedLeft] = useState(1);
   const [selectedRight, setSelectedRight] = useState(8);
-  const [currentApproach, setCurrentApproach] = useState<'brute' | 'better' | 'optimal'>('brute');
+  const [currentApproach, setCurrentApproach] = useState<'brute' | 'better' | 'optimal'>('optimal');
+  const [showLearning, setShowLearning] = useState(false);
 
   const height = [1, 8, 6, 2, 5, 4, 8, 3, 7];
   
@@ -341,6 +342,16 @@ export default function ContainerWithMostWaterPage() {
           transition={{ duration: 0.6, delay: 1 }}
           className="flex flex-wrap gap-4 mb-16"
         >
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setShowLearning(true)}
+            className="flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl text-lg font-semibold hover:bg-gray-800 transition-colors shadow-lg"
+          >
+            Visualize Problem
+            <ArrowRight size={20} />
+          </motion.button>
+          
           <motion.a
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -376,14 +387,26 @@ export default function ContainerWithMostWaterPage() {
           </Link>
         </motion.div>
 
-        {/* Learn the Solution Section */}
+        {/* Learn the Solution Section - Only shown when Visualize Problem is clicked */}
+        {showLearning && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.2 }}
+          transition={{ duration: 0.6 }}
           className="border-t-4 border-gray-900 pt-16"
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Learn the Solution</h2>
+          <div className="flex justify-between items-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900">Learn the Solution</h2>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setShowLearning(false)}
+              className="flex items-center gap-2 px-6 py-3 bg-white text-gray-900 rounded-xl text-base font-semibold hover:bg-gray-50 transition-colors border-2 border-gray-200"
+            >
+              <ArrowRight size={18} className="rotate-180" />
+              Back to Problem Intro
+            </motion.button>
+          </div>
           
           {/* Approach Tabs */}
           <div className="flex gap-4 mb-8 justify-center flex-wrap">
@@ -564,6 +587,7 @@ public:
             {currentApproach === 'optimal' && <OptimalVisualizer />}
           </div>
         </motion.div>
+        )}
       </div>
     </div>
   );
