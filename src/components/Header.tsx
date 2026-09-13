@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -155,13 +157,38 @@ export default function Header() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <button className={`text-sm font-medium transition-colors duration-200 px-4 py-2 ${
-            isLibraryPage || isProblemPage
-              ? 'text-white/70 hover:text-white'
-              : 'text-text-secondary hover:text-text-primary'
-          }`}>
-            Log in
-          </button>
+          {isAuthenticated ? (
+            <>
+              <div className={`flex items-center gap-2 text-sm font-medium ${
+                isLibraryPage || isProblemPage ? 'text-white/90' : 'text-text-primary'
+              }`}>
+                <User size={16} />
+                <span>{user?.name}</span>
+              </div>
+              <button
+                onClick={logout}
+                className={`flex items-center gap-1.5 text-sm font-medium transition-colors duration-200 px-4 py-2 ${
+                  isLibraryPage || isProblemPage
+                    ? 'text-white/70 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
+                }`}
+              >
+                <LogOut size={14} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/auth"
+              className={`text-sm font-medium transition-colors duration-200 px-4 py-2 ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
+            >
+              Log in
+            </Link>
+          )}
           <Link
             to="/blind75"
             className="text-sm font-medium text-white bg-lavender hover:bg-lavender/80 px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-lavender/20"
@@ -268,13 +295,38 @@ export default function Header() {
               <div className={`pt-4 border-t flex flex-col gap-3 ${
                 isLibraryPage || isProblemPage ? 'border-white/10' : 'border-border/50'
               }`}>
-                <button className={`text-sm font-medium py-2 text-left ${
-                  isLibraryPage || isProblemPage
-                    ? 'text-white/70'
-                    : 'text-text-secondary'
-                }`}>
-                  Log in
-                </button>
+                {isAuthenticated ? (
+                  <>
+                    <div className={`flex items-center gap-2 text-sm font-medium py-2 ${
+                      isLibraryPage || isProblemPage ? 'text-white/90' : 'text-text-primary'
+                    }`}>
+                      <User size={16} />
+                      <span>{user?.name}</span>
+                    </div>
+                    <button
+                      onClick={logout}
+                      className={`flex items-center gap-1.5 text-sm font-medium py-2 text-left ${
+                        isLibraryPage || isProblemPage
+                          ? 'text-white/70'
+                          : 'text-text-secondary'
+                      }`}
+                    >
+                      <LogOut size={14} />
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className={`text-sm font-medium py-2 text-left ${
+                      isLibraryPage || isProblemPage
+                        ? 'text-white/70'
+                        : 'text-text-secondary'
+                    }`}
+                  >
+                    Log in
+                  </Link>
+                )}
                 <Link
                   to="/blind75"
                   className="text-sm font-medium text-dark bg-lavender hover:bg-lavender/80 px-5 py-3 rounded-full text-center transition-all"
