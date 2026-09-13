@@ -211,38 +211,6 @@ export default function ContainerOptimalVisualizer() {
             </motion.div>
           )}
         </div>
-
-        {/* Code */}
-        <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8 mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">C++ Code</h3>
-          <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
-            <pre className="text-sm font-mono leading-relaxed">
-              {['class Solution {', 'public:', '    int maxArea(vector<int>& height) {', '        int maxArea = 0;', '        int left = 0;', '        int right = height.size() - 1;', '', '        while (left < right) {', '            int waterHeight = min(height[left], height[right]);', '            int width = right - left;', '            int area = waterHeight * width;', '', '            maxArea = max(maxArea, area);', '', '            if (height[left] < height[right]) {', '                left++;', '            } else {', '                right--;', '            }', '        }', '', '        return maxArea;', '    }', '};'].map((line, index) => (
-                <motion.div key={index} animate={{ backgroundColor: step.codeLine === index ? 'rgba(139, 92, 246, 0.2)' : 'transparent' }} className={`px-3 py-1 rounded ${step.codeLine === index ? 'border-l-4 border-purple-400' : ''}`}>
-                  <span className="text-gray-500 mr-4 select-none">{String(index + 1).padStart(2, '0')}</span>
-                  <code className="text-gray-100">{line}</code>
-                </motion.div>
-              ))}
-            </pre>
-          </div>
-        </div>
-
-        {/* Complexity */}
-        <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
-              <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
-              <div className="text-4xl font-bold text-blue-900 mb-3">O(n)</div>
-              <p className="text-sm text-blue-700 leading-relaxed">Single pass with two pointers moving inward. Each step processes one pair.</p>
-            </div>
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
-              <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
-              <div className="text-4xl font-bold text-purple-900 mb-3">O(1)</div>
-              <p className="text-sm text-purple-700 leading-relaxed">Only three variables (left, right, maxArea) used.</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
