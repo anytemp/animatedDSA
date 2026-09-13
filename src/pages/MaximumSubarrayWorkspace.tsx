@@ -3,6 +3,320 @@ import { motion } from 'framer-motion';
 import { Play, Pause, SkipBack, SkipForward, RotateCcw } from 'lucide-react';
 import WorkspaceTemplate from '../components/WorkspaceTemplate';
 
+function BruteForceVisualizer() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
+
+  const nums = [-2, 1, -3];
+  const steps = [
+    { id: 0, phase: 'init', i: null, j: null, k: null, sum: null, maxSum: -Infinity, codeLine: 3, explanation: 'Initialize maxSum = -∞. We will check every possible subarray.' },
+    { id: 1, phase: 'outer', i: 0, j: null, k: null, sum: null, maxSum: -Infinity, codeLine: 4, explanation: 'Start outer loop: i = 0 (starting index of subarray).' },
+    { id: 2, phase: 'middle', i: 0, j: 0, k: null, sum: null, maxSum: -Infinity, codeLine: 5, explanation: 'Middle loop: j = 0 (ending index of subarray).' },
+    { id: 3, phase: 'inner', i: 0, j: 0, k: 0, sum: 0, maxSum: -Infinity, codeLine: 6, explanation: 'Inner loop: calculate sum from i=0 to j=0. sum = 0.' },
+    { id: 4, phase: 'inner', i: 0, j: 0, k: 0, sum: -2, maxSum: -Infinity, codeLine: 7, explanation: 'Add nums[0] = -2 to sum. sum = -2.' },
+    { id: 5, phase: 'update', i: 0, j: 0, k: null, sum: -2, maxSum: -2, codeLine: 9, explanation: 'Update maxSum = max(-∞, -2) = -2.' },
+    { id: 6, phase: 'middle', i: 0, j: 1, k: null, sum: null, maxSum: -2, codeLine: 5, explanation: 'Middle loop: j = 1.' },
+    { id: 7, phase: 'inner', i: 0, j: 1, k: 0, sum: 0, maxSum: -2, codeLine: 6, explanation: 'Calculate sum from i=0 to j=1. sum = 0.' },
+    { id: 8, phase: 'inner', i: 0, j: 1, k: 0, sum: -2, maxSum: -2, codeLine: 7, explanation: 'Add nums[0] = -2. sum = -2.' },
+    { id: 9, phase: 'inner', i: 0, j: 1, k: 1, sum: -1, maxSum: -2, codeLine: 7, explanation: 'Add nums[1] = 1. sum = -1.' },
+    { id: 10, phase: 'update', i: 0, j: 1, k: null, sum: -1, maxSum: -1, codeLine: 9, explanation: 'Update maxSum = max(-2, -1) = -1.' },
+    { id: 11, phase: 'middle', i: 0, j: 2, k: null, sum: null, maxSum: -1, codeLine: 5, explanation: 'Middle loop: j = 2.' },
+    { id: 12, phase: 'inner', i: 0, j: 2, k: 0, sum: 0, maxSum: -1, codeLine: 6, explanation: 'Calculate sum from i=0 to j=2. sum = 0.' },
+    { id: 13, phase: 'inner', i: 0, j: 2, k: 0, sum: -2, maxSum: -1, codeLine: 7, explanation: 'Add nums[0] = -2. sum = -2.' },
+    { id: 14, phase: 'inner', i: 0, j: 2, k: 1, sum: -1, maxSum: -1, codeLine: 7, explanation: 'Add nums[1] = 1. sum = -1.' },
+    { id: 15, phase: 'inner', i: 0, j: 2, k: 2, sum: -4, maxSum: -1, codeLine: 7, explanation: 'Add nums[2] = -3. sum = -4.' },
+    { id: 16, phase: 'update', i: 0, j: 2, k: null, sum: -4, maxSum: -1, codeLine: 9, explanation: 'Update maxSum = max(-1, -4) = -1.' },
+    { id: 17, phase: 'outer', i: 1, j: null, k: null, sum: null, maxSum: -1, codeLine: 4, explanation: 'Outer loop: i = 1.' },
+    { id: 18, phase: 'middle', i: 1, j: 1, k: null, sum: null, maxSum: -1, codeLine: 5, explanation: 'Middle loop: j = 1.' },
+    { id: 19, phase: 'inner', i: 1, j: 1, k: 1, sum: 0, maxSum: -1, codeLine: 6, explanation: 'Calculate sum from i=1 to j=1. sum = 0.' },
+    { id: 20, phase: 'inner', i: 1, j: 1, k: 1, sum: 1, maxSum: -1, codeLine: 7, explanation: 'Add nums[1] = 1. sum = 1.' },
+    { id: 21, phase: 'update', i: 1, j: 1, k: null, sum: 1, maxSum: 1, codeLine: 9, explanation: 'Update maxSum = max(-1, 1) = 1.' },
+    { id: 22, phase: 'middle', i: 1, j: 2, k: null, sum: null, maxSum: 1, codeLine: 5, explanation: 'Middle loop: j = 2.' },
+    { id: 23, phase: 'inner', i: 1, j: 2, k: 1, sum: 0, maxSum: 1, codeLine: 6, explanation: 'Calculate sum from i=1 to j=2. sum = 0.' },
+    { id: 24, phase: 'inner', i: 1, j: 2, k: 1, sum: 1, maxSum: 1, codeLine: 7, explanation: 'Add nums[1] = 1. sum = 1.' },
+    { id: 25, phase: 'inner', i: 1, j: 2, k: 2, sum: -2, maxSum: 1, codeLine: 7, explanation: 'Add nums[2] = -3. sum = -2.' },
+    { id: 26, phase: 'update', i: 1, j: 2, k: null, sum: -2, maxSum: 1, codeLine: 9, explanation: 'Update maxSum = max(1, -2) = 1.' },
+    { id: 27, phase: 'outer', i: 2, j: null, k: null, sum: null, maxSum: 1, codeLine: 4, explanation: 'Outer loop: i = 2.' },
+    { id: 28, phase: 'middle', i: 2, j: 2, k: null, sum: null, maxSum: 1, codeLine: 5, explanation: 'Middle loop: j = 2.' },
+    { id: 29, phase: 'inner', i: 2, j: 2, k: 2, sum: 0, maxSum: 1, codeLine: 6, explanation: 'Calculate sum from i=2 to j=2. sum = 0.' },
+    { id: 30, phase: 'inner', i: 2, j: 2, k: 2, sum: -3, maxSum: 1, codeLine: 7, explanation: 'Add nums[2] = -3. sum = -3.' },
+    { id: 31, phase: 'update', i: 2, j: 2, k: null, sum: -3, maxSum: 1, codeLine: 9, explanation: 'Update maxSum = max(1, -3) = 1.' },
+    { id: 32, phase: 'return', i: null, j: null, k: null, sum: null, maxSum: 1, codeLine: 12, explanation: 'All subarrays checked. Return maxSum = 1. The maximum subarray is [1].' },
+  ];
+
+  const step = steps[currentStep];
+
+  useEffect(() => {
+    if (isPlaying && currentStep < steps.length - 1) {
+      const timer = setTimeout(() => setCurrentStep(currentStep + 1), 2500 / speed);
+      return () => clearTimeout(timer);
+    } else if (currentStep === steps.length - 1) {
+      setIsPlaying(false);
+    }
+  }, [isPlaying, currentStep, speed, steps.length]);
+
+  return (
+    <div className="bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 py-12 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Brute Force Visualization</h2>
+            <p className="text-gray-600">Check every possible subarray (O(n³))</p>
+          </div>
+          <div className="flex flex-col items-center lg:items-end gap-4">
+            <div className="text-sm text-gray-500 font-mono">Step {currentStep + 1} of {steps.length}</div>
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { setCurrentStep(0); setIsPlaying(false); }} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors">
+                <RotateCcw size={14} /><span className="hidden sm:inline">Reset</span>
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => currentStep > 0 && setCurrentStep(currentStep - 1)} disabled={currentStep === 0} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <SkipBack size={14} /><span className="hidden sm:inline">Previous</span>
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsPlaying(!isPlaying)} className="flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-colors">
+                {isPlaying ? <Pause size={14} /> : <Play size={14} />}{isPlaying ? 'Pause' : 'Play'}
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => currentStep < steps.length - 1 && setCurrentStep(currentStep + 1)} disabled={currentStep === steps.length - 1} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <span className="hidden sm:inline">Next</span><SkipForward size={14} />
+              </motion.button>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Speed:</span>
+              {[0.5, 1, 1.5, 2].map((s) => (
+                <button key={s} onClick={() => setSpeed(s)} className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${speed === s ? 'bg-purple-100 text-purple-700 border-2 border-purple-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'}`}>{s}x</button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+          <div className="mb-8">
+            <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">Input Array</div>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              {nums.map((num, index) => {
+                const isInSubarray = step.i !== null && step.j !== null && index >= step.i && index <= step.j;
+                return (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="flex flex-col items-center">
+                    <div className="text-xs text-gray-400 mb-2 font-mono">Index {index}</div>
+                    <motion.div animate={{ scale: isInSubarray ? 1.1 : 1, backgroundColor: isInSubarray ? '#ede9fe' : '#ffffff', borderColor: isInSubarray ? '#8b5cf6' : '#e5e7eb' }} className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 flex items-center justify-center text-xl sm:text-2xl font-bold text-gray-900">
+                      {num}
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4 border-2 border-purple-200">
+              <div className="text-xs text-purple-600 font-semibold mb-1">i (start)</div>
+              <div className="text-3xl font-bold text-purple-900">{step.i !== null ? step.i : '—'}</div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200">
+              <div className="text-xs text-blue-600 font-semibold mb-1">j (end)</div>
+              <div className="text-3xl font-bold text-blue-900">{step.j !== null ? step.j : '—'}</div>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-4 border-2 border-emerald-200">
+              <div className="text-xs text-emerald-600 font-semibold mb-1">sum</div>
+              <motion.div key={step.sum} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-3xl font-bold text-emerald-900">{step.sum !== null ? step.sum : '—'}</motion.div>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-4 border-2 border-amber-200">
+              <div className="text-xs text-amber-600 font-semibold mb-1">maxSum</div>
+              <motion.div key={step.maxSum} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-3xl font-bold text-amber-900">{step.maxSum !== -Infinity ? step.maxSum : '-∞'}</motion.div>
+            </div>
+          </div>
+
+          <motion.div key={step.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+            <p className="text-lg text-gray-700 leading-relaxed text-center">{step.explanation}</p>
+          </motion.div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">C++ Code</h3>
+          <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
+            <pre className="text-sm font-mono leading-relaxed">
+              {['class Solution {', 'public:', '    int maxSubArray(vector<int>& nums) {', '        int maxSum = INT_MIN;', '', '        for (int i = 0; i < nums.size(); i++) {', '            for (int j = i; j < nums.size(); j++) {', '                int sum = 0;', '                for (int k = i; k <= j; k++) {', '                    sum += nums[k];', '                }', '                maxSum = max(maxSum, sum);', '            }', '        }', '', '        return maxSum;', '    }', '};'].map((line, index) => (
+                <motion.div key={index} animate={{ backgroundColor: step.codeLine === index ? 'rgba(139, 92, 246, 0.2)' : 'transparent' }} className={`px-3 py-1 rounded ${step.codeLine === index ? 'border-l-4 border-purple-400' : ''}`}>
+                  <span className="text-gray-500 mr-4 select-none">{String(index + 1).padStart(2, '0')}</span>
+                  <code className="text-gray-100">{line}</code>
+                </motion.div>
+              ))}
+            </pre>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+              <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+              <div className="text-4xl font-bold text-blue-900 mb-3">O(n³)</div>
+              <p className="text-sm text-blue-700 leading-relaxed">Three nested loops. For each pair (i, j), we calculate the sum in O(n) time.</p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+              <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+              <div className="text-4xl font-bold text-purple-900 mb-3">O(1)</div>
+              <p className="text-sm text-purple-700 leading-relaxed">Only a few variables used regardless of input size.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BetterVisualizer() {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
+
+  const nums = [-2, 1, -3];
+  const steps = [
+    { id: 0, phase: 'init', i: null, j: null, sum: null, maxSum: -Infinity, codeLine: 3, explanation: 'Initialize maxSum = -∞. We will fix each starting index and extend the ending index.' },
+    { id: 1, phase: 'outer', i: 0, j: null, sum: null, maxSum: -Infinity, codeLine: 4, explanation: 'Start outer loop: i = 0 (starting index).' },
+    { id: 2, phase: 'inner', i: 0, j: 0, sum: 0, maxSum: -Infinity, codeLine: 5, explanation: 'Inner loop: j = 0. Initialize sum = 0.' },
+    { id: 3, phase: 'inner', i: 0, j: 0, sum: -2, maxSum: -Infinity, codeLine: 6, explanation: 'Add nums[0] = -2 to sum. sum = -2.' },
+    { id: 4, phase: 'update', i: 0, j: 0, sum: -2, maxSum: -2, codeLine: 7, explanation: 'Update maxSum = max(-∞, -2) = -2.' },
+    { id: 5, phase: 'inner', i: 0, j: 1, sum: -2, maxSum: -2, codeLine: 5, explanation: 'Extend to j = 1. sum is still -2.' },
+    { id: 6, phase: 'inner', i: 0, j: 1, sum: -1, maxSum: -2, codeLine: 6, explanation: 'Add nums[1] = 1 to sum. sum = -2 + 1 = -1.' },
+    { id: 7, phase: 'update', i: 0, j: 1, sum: -1, maxSum: -1, codeLine: 7, explanation: 'Update maxSum = max(-2, -1) = -1.' },
+    { id: 8, phase: 'inner', i: 0, j: 2, sum: -1, maxSum: -1, codeLine: 5, explanation: 'Extend to j = 2. sum is still -1.' },
+    { id: 9, phase: 'inner', i: 0, j: 2, sum: -4, maxSum: -1, codeLine: 6, explanation: 'Add nums[2] = -3 to sum. sum = -1 + (-3) = -4.' },
+    { id: 10, phase: 'update', i: 0, j: 2, sum: -4, maxSum: -1, codeLine: 7, explanation: 'Update maxSum = max(-1, -4) = -1.' },
+    { id: 11, phase: 'outer', i: 1, j: null, sum: null, maxSum: -1, codeLine: 4, explanation: 'Outer loop: i = 1.' },
+    { id: 12, phase: 'inner', i: 1, j: 1, sum: 0, maxSum: -1, codeLine: 5, explanation: 'Inner loop: j = 1. Initialize sum = 0.' },
+    { id: 13, phase: 'inner', i: 1, j: 1, sum: 1, maxSum: -1, codeLine: 6, explanation: 'Add nums[1] = 1 to sum. sum = 1.' },
+    { id: 14, phase: 'update', i: 1, j: 1, sum: 1, maxSum: 1, codeLine: 7, explanation: 'Update maxSum = max(-1, 1) = 1.' },
+    { id: 15, phase: 'inner', i: 1, j: 2, sum: 1, maxSum: 1, codeLine: 5, explanation: 'Extend to j = 2. sum is still 1.' },
+    { id: 16, phase: 'inner', i: 1, j: 2, sum: -2, maxSum: 1, codeLine: 6, explanation: 'Add nums[2] = -3 to sum. sum = 1 + (-3) = -2.' },
+    { id: 17, phase: 'update', i: 1, j: 2, sum: -2, maxSum: 1, codeLine: 7, explanation: 'Update maxSum = max(1, -2) = 1.' },
+    { id: 18, phase: 'outer', i: 2, j: null, sum: null, maxSum: 1, codeLine: 4, explanation: 'Outer loop: i = 2.' },
+    { id: 19, phase: 'inner', i: 2, j: 2, sum: 0, maxSum: 1, codeLine: 5, explanation: 'Inner loop: j = 2. Initialize sum = 0.' },
+    { id: 20, phase: 'inner', i: 2, j: 2, sum: -3, maxSum: 1, codeLine: 6, explanation: 'Add nums[2] = -3 to sum. sum = -3.' },
+    { id: 21, phase: 'update', i: 2, j: 2, sum: -3, maxSum: 1, codeLine: 7, explanation: 'Update maxSum = max(1, -3) = 1.' },
+    { id: 22, phase: 'return', i: null, j: null, sum: null, maxSum: 1, codeLine: 10, explanation: 'All subarrays checked. Return maxSum = 1. The maximum subarray is [1].' },
+  ];
+
+  const step = steps[currentStep];
+
+  useEffect(() => {
+    if (isPlaying && currentStep < steps.length - 1) {
+      const timer = setTimeout(() => setCurrentStep(currentStep + 1), 2500 / speed);
+      return () => clearTimeout(timer);
+    } else if (currentStep === steps.length - 1) {
+      setIsPlaying(false);
+    }
+  }, [isPlaying, currentStep, speed, steps.length]);
+
+  return (
+    <div className="bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 py-12 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Better Approach Visualization</h2>
+            <p className="text-gray-600">Fix start, extend end with running sum (O(n²))</p>
+          </div>
+          <div className="flex flex-col items-center lg:items-end gap-4">
+            <div className="text-sm text-gray-500 font-mono">Step {currentStep + 1} of {steps.length}</div>
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => { setCurrentStep(0); setIsPlaying(false); }} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors">
+                <RotateCcw size={14} /><span className="hidden sm:inline">Reset</span>
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => currentStep > 0 && setCurrentStep(currentStep - 1)} disabled={currentStep === 0} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <SkipBack size={14} /><span className="hidden sm:inline">Previous</span>
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setIsPlaying(!isPlaying)} className="flex items-center gap-1.5 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-colors">
+                {isPlaying ? <Pause size={14} /> : <Play size={14} />}{isPlaying ? 'Pause' : 'Play'}
+              </motion.button>
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => currentStep < steps.length - 1 && setCurrentStep(currentStep + 1)} disabled={currentStep === steps.length - 1} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <span className="hidden sm:inline">Next</span><SkipForward size={14} />
+              </motion.button>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500">Speed:</span>
+              {[0.5, 1, 1.5, 2].map((s) => (
+                <button key={s} onClick={() => setSpeed(s)} className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${speed === s ? 'bg-purple-100 text-purple-700 border-2 border-purple-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'}`}>{s}x</button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+          <div className="mb-8">
+            <div className="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-4">Input Array</div>
+            <div className="flex items-center justify-center gap-3 flex-wrap">
+              {nums.map((num, index) => {
+                const isInSubarray = step.i !== null && step.j !== null && index >= step.i && index <= step.j;
+                return (
+                  <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="flex flex-col items-center">
+                    <div className="text-xs text-gray-400 mb-2 font-mono">Index {index}</div>
+                    <motion.div animate={{ scale: isInSubarray ? 1.1 : 1, backgroundColor: isInSubarray ? '#ede9fe' : '#ffffff', borderColor: isInSubarray ? '#8b5cf6' : '#e5e7eb' }} className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl border-2 flex items-center justify-center text-xl sm:text-2xl font-bold text-gray-900">
+                      {num}
+                    </motion.div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-4 border-2 border-purple-200">
+              <div className="text-xs text-purple-600 font-semibold mb-1">i (start)</div>
+              <div className="text-3xl font-bold text-purple-900">{step.i !== null ? step.i : '—'}</div>
+            </div>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-4 border-2 border-blue-200">
+              <div className="text-xs text-blue-600 font-semibold mb-1">j (end)</div>
+              <div className="text-3xl font-bold text-blue-900">{step.j !== null ? step.j : '—'}</div>
+            </div>
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-4 border-2 border-emerald-200">
+              <div className="text-xs text-emerald-600 font-semibold mb-1">sum</div>
+              <motion.div key={step.sum} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-3xl font-bold text-emerald-900">{step.sum !== null ? step.sum : '—'}</motion.div>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-4 border-2 border-amber-200">
+              <div className="text-xs text-amber-600 font-semibold mb-1">maxSum</div>
+              <motion.div key={step.maxSum} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="text-3xl font-bold text-amber-900">{step.maxSum !== -Infinity ? step.maxSum : '-∞'}</motion.div>
+            </div>
+          </div>
+
+          <motion.div key={step.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+            <p className="text-lg text-gray-700 leading-relaxed text-center">{step.explanation}</p>
+          </motion.div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">C++ Code</h3>
+          <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
+            <pre className="text-sm font-mono leading-relaxed">
+              {['class Solution {', 'public:', '    int maxSubArray(vector<int>& nums) {', '        int maxSum = INT_MIN;', '', '        for (int i = 0; i < nums.size(); i++) {', '            int sum = 0;', '            for (int j = i; j < nums.size(); j++) {', '                sum += nums[j];', '                maxSum = max(maxSum, sum);', '            }', '        }', '', '        return maxSum;', '    }', '};'].map((line, index) => (
+                <motion.div key={index} animate={{ backgroundColor: step.codeLine === index ? 'rgba(139, 92, 246, 0.2)' : 'transparent' }} className={`px-3 py-1 rounded ${step.codeLine === index ? 'border-l-4 border-purple-400' : ''}`}>
+                  <span className="text-gray-500 mr-4 select-none">{String(index + 1).padStart(2, '0')}</span>
+                  <code className="text-gray-100">{line}</code>
+                </motion.div>
+              ))}
+            </pre>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+              <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+              <div className="text-4xl font-bold text-blue-900 mb-3">O(n²)</div>
+              <p className="text-sm text-blue-700 leading-relaxed">Two nested loops. We maintain a running sum instead of recalculating.</p>
+            </div>
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+              <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+              <div className="text-4xl font-bold text-purple-900 mb-3">O(1)</div>
+              <p className="text-sm text-purple-700 leading-relaxed">Only a few variables used regardless of input size.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function KadaneVisualizer() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -219,8 +533,9 @@ export default function MaximumSubarrayWorkspace() {
       }}
     >
       {(approach) => {
-        if (approach === 'optimal') return <KadaneVisualizer />;
-        return <div className="p-12 text-center text-gray-500">Visualization for this approach coming soon. Try the Optimal approach to see Kadane's Algorithm in action!</div>;
+        if (approach === 'brute') return <BruteForceVisualizer />;
+        if (approach === 'better') return <BetterVisualizer />;
+        return <KadaneVisualizer />;
       }}
     </WorkspaceTemplate>
   );

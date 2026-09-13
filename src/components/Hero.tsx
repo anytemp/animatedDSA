@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const floatingElements = [
@@ -104,13 +104,6 @@ export default function Hero() {
                 Explore Blind 75
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
               </Link>
-              <a
-                href="#how-it-works"
-                className="group inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm border border-border text-text-primary px-7 py-4 rounded-full text-sm font-semibold hover:bg-white hover:border-lavender/40 transition-all duration-300"
-              >
-                <Play size={14} className="text-dark" />
-                See how it works
-              </a>
             </motion.div>
           </div>
 

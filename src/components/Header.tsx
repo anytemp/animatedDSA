@@ -108,29 +108,6 @@ export default function Header() {
             }`} />
           </Link>
 
-          {/* How It Works - hash link on landing page, or navigate to landing page */}
-          {isLandingPage ? (
-            <a
-              href="#how-it-works"
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
-            >
-              How It Works
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
-            </a>
-          ) : (
-            <Link
-              to="/"
-              className={`text-sm font-medium transition-colors duration-200 relative group ${
-                isLibraryPage || isProblemPage
-                  ? 'text-white/70 hover:text-white'
-                  : 'text-text-secondary hover:text-text-primary'
-              }`}
-            >
-              How It Works
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
-            </Link>
-          )}
-
           {/* Progress - hash link on landing page, or navigate to landing page */}
           {isLandingPage ? (
             <a
@@ -261,21 +238,6 @@ export default function Header() {
               }`}>
                 Blind 75
               </Link>
-
-              {/* How It Works */}
-              {isLandingPage ? (
-                <a href="#how-it-works" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
-                  How It Works
-                </a>
-              ) : (
-                <Link to="/" className={`text-base font-medium transition-colors py-2 ${
-                  isLibraryPage || isProblemPage
-                    ? 'text-white/70 hover:text-white'
-                    : 'text-text-secondary hover:text-text-primary'
-                }`}>
-                  How It Works
-                </Link>
-              )}
 
               {/* Progress */}
               {isLandingPage ? (
