@@ -15,13 +15,21 @@ interface Step {
   duplicateIndex?: number;
 }
 
-const nums = [1, 2, 3, 1];
+type InputType = 'duplicate' | 'no-duplicate';
 
-// Generate comprehensive steps for hash set approach
-const steps: Step[] = [
-  // INITIALIZATION
-  {
-    id: 0,
+const inputs = {
+  'duplicate': [1, 2, 3, 1],
+  'no-duplicate': [1, 2, 3, 4],
+};
+
+function generateSteps(nums: number[]): Step[] {
+  const steps: Step[] = [];
+  let stepId = 0;
+  const seen: number[] = [];
+
+  // Initialization
+  steps.push({
+    id: stepId++,
     phase: 'init',
     currentIndex: null,
     currentValue: null,
@@ -29,226 +37,138 @@ const steps: Step[] = [
     operation: 'INITIALIZE EMPTY SET',
     codeLine: 3,
     explanation: 'We create an empty hash set called "seen". It will store the values we have already visited.',
-  },
-  
-  // ITERATION 0
-  {
-    id: 1,
-    phase: 'loop-start',
-    currentIndex: 0,
-    currentValue: 1,
-    seen: [],
-    operation: 'START LOOP',
-    codeLine: 5,
-    explanation: 'Loop starts. Current index i = 0.',
-  },
-  {
-    id: 2,
-    phase: 'read',
-    currentIndex: 0,
-    currentValue: 1,
-    seen: [],
-    operation: 'READ CURRENT VALUE',
-    codeLine: 6,
-    explanation: 'Read the current value: nums[0] = 1',
-  },
-  {
-    id: 3,
-    phase: 'search',
-    currentIndex: 0,
-    currentValue: 1,
-    seen: [],
-    operation: 'SEARCH SET',
-    codeLine: 6,
-    explanation: 'Search for 1 in the seen set. The set is currently empty.',
-  },
-  {
-    id: 4,
-    phase: 'not-found',
-    currentIndex: 0,
-    currentValue: 1,
-    seen: [],
-    operation: 'VALUE NOT FOUND',
-    codeLine: 6,
-    explanation: '1 is not in the seen set. This is not a duplicate.',
-  },
-  {
-    id: 5,
-    phase: 'insert',
-    currentIndex: 0,
-    currentValue: 1,
-    seen: [1],
-    operation: 'STORE VALUE',
-    codeLine: 10,
-    explanation: 'Because 1 was not found, we store it in the seen set so that future elements can be compared against it.',
-  },
-  {
-    id: 6,
-    phase: 'loop-start',
-    currentIndex: 1,
-    currentValue: 2,
-    seen: [1],
-    operation: 'INCREMENT LOOP',
-    codeLine: 5,
-    explanation: 'i++ → i becomes 1. Moving to the next iteration.',
-  },
-  
-  // ITERATION 1
-  {
-    id: 7,
-    phase: 'read',
-    currentIndex: 1,
-    currentValue: 2,
-    seen: [1],
-    operation: 'READ CURRENT VALUE',
-    codeLine: 6,
-    explanation: 'Read the current value: nums[1] = 2',
-  },
-  {
-    id: 8,
-    phase: 'search',
-    currentIndex: 1,
-    currentValue: 2,
-    seen: [1],
-    operation: 'SEARCH SET',
-    codeLine: 6,
-    explanation: 'Search for 2 in the seen set. The set currently contains {1}.',
-  },
-  {
-    id: 9,
-    phase: 'not-found',
-    currentIndex: 1,
-    currentValue: 2,
-    seen: [1],
-    operation: 'VALUE NOT FOUND',
-    codeLine: 6,
-    explanation: '2 is not in the seen set. This is not a duplicate.',
-  },
-  {
-    id: 10,
-    phase: 'insert',
-    currentIndex: 1,
-    currentValue: 2,
-    seen: [1, 2],
-    operation: 'STORE VALUE',
-    codeLine: 10,
-    explanation: 'Because 2 was not found, we store it in the seen set.',
-  },
-  {
-    id: 11,
-    phase: 'loop-start',
-    currentIndex: 2,
-    currentValue: 3,
-    seen: [1, 2],
-    operation: 'INCREMENT LOOP',
-    codeLine: 5,
-    explanation: 'i++ → i becomes 2. Moving to the next iteration.',
-  },
-  
-  // ITERATION 2
-  {
-    id: 12,
-    phase: 'read',
-    currentIndex: 2,
-    currentValue: 3,
-    seen: [1, 2],
-    operation: 'READ CURRENT VALUE',
-    codeLine: 6,
-    explanation: 'Read the current value: nums[2] = 3',
-  },
-  {
-    id: 13,
-    phase: 'search',
-    currentIndex: 2,
-    currentValue: 3,
-    seen: [1, 2],
-    operation: 'SEARCH SET',
-    codeLine: 6,
-    explanation: 'Search for 3 in the seen set. The set currently contains {1, 2}.',
-  },
-  {
-    id: 14,
-    phase: 'not-found',
-    currentIndex: 2,
-    currentValue: 3,
-    seen: [1, 2],
-    operation: 'VALUE NOT FOUND',
-    codeLine: 6,
-    explanation: '3 is not in the seen set. This is not a duplicate.',
-  },
-  {
-    id: 15,
-    phase: 'insert',
-    currentIndex: 2,
-    currentValue: 3,
-    seen: [1, 2, 3],
-    operation: 'STORE VALUE',
-    codeLine: 10,
-    explanation: 'Because 3 was not found, we store it in the seen set.',
-  },
-  {
-    id: 16,
-    phase: 'loop-start',
-    currentIndex: 3,
-    currentValue: 1,
-    seen: [1, 2, 3],
-    operation: 'INCREMENT LOOP',
-    codeLine: 5,
-    explanation: 'i++ → i becomes 3. Moving to the next iteration.',
-  },
-  
-  // ITERATION 3 - DUPLICATE FOUND!
-  {
-    id: 17,
-    phase: 'read',
-    currentIndex: 3,
-    currentValue: 1,
-    seen: [1, 2, 3],
-    operation: 'READ CURRENT VALUE',
-    codeLine: 6,
-    explanation: 'Read the current value: nums[3] = 1',
-  },
-  {
-    id: 18,
-    phase: 'search',
-    currentIndex: 3,
-    currentValue: 1,
-    seen: [1, 2, 3],
-    operation: 'SEARCH SET',
-    codeLine: 6,
-    explanation: 'Search for 1 in the seen set. The set currently contains {1, 2, 3}.',
-  },
-  {
-    id: 19,
-    phase: 'found',
-    currentIndex: 3,
-    currentValue: 1,
-    seen: [1, 2, 3],
-    operation: 'VALUE ALREADY EXISTS',
-    codeLine: 6,
-    explanation: '1 is already in the seen set! We found a duplicate!',
-    showConnection: true,
-    duplicateIndex: 0,
-  },
-  {
-    id: 20,
-    phase: 'return',
-    currentIndex: 3,
-    currentValue: 1,
-    seen: [1, 2, 3],
-    operation: 'DUPLICATE FOUND',
-    codeLine: 7,
-    explanation: 'The value 1 appeared before at index 0. Therefore, the array contains a duplicate. Return true.',
-    showConnection: true,
-    duplicateIndex: 0,
-  },
-];
+  });
+
+  // Process each element
+  for (let i = 0; i < nums.length; i++) {
+    const currentValue = nums[i];
+    
+    // Loop start
+    steps.push({
+      id: stepId++,
+      phase: 'loop-start',
+      currentIndex: i,
+      currentValue,
+      seen: [...seen],
+      operation: i === 0 ? 'START LOOP' : 'INCREMENT LOOP',
+      codeLine: 5,
+      explanation: i === 0 
+        ? 'Loop starts. Current index i = 0.'
+        : `i++ → i becomes ${i}. Moving to the next iteration.`,
+    });
+
+    // Read current value
+    steps.push({
+      id: stepId++,
+      phase: 'read',
+      currentIndex: i,
+      currentValue,
+      seen: [...seen],
+      operation: 'READ CURRENT VALUE',
+      codeLine: 6,
+      explanation: `Read the current value: nums[${i}] = ${currentValue}`,
+    });
+
+    // Search in set
+    steps.push({
+      id: stepId++,
+      phase: 'search',
+      currentIndex: i,
+      currentValue,
+      seen: [...seen],
+      operation: 'SEARCH SET',
+      codeLine: 6,
+      explanation: `Search for ${currentValue} in the seen set. The set currently contains {${seen.join(', ')}}.`,
+    });
+
+    // Check if found
+    const isDuplicate = seen.includes(currentValue);
+    
+    if (isDuplicate) {
+      // Found - duplicate detected
+      const duplicateIndex = seen.indexOf(currentValue);
+      steps.push({
+        id: stepId++,
+        phase: 'found',
+        currentIndex: i,
+        currentValue,
+        seen: [...seen],
+        operation: 'VALUE ALREADY EXISTS',
+        codeLine: 6,
+        explanation: `${currentValue} is already in the seen set! We found a duplicate!`,
+        showConnection: true,
+        duplicateIndex,
+      });
+
+      // Return true
+      steps.push({
+        id: stepId++,
+        phase: 'return',
+        currentIndex: i,
+        currentValue,
+        seen: [...seen],
+        operation: 'DUPLICATE FOUND',
+        codeLine: 7,
+        explanation: `The value ${currentValue} appeared before. Therefore, the array contains a duplicate. Return true.`,
+        showConnection: true,
+        duplicateIndex,
+      });
+
+      // Stop here - we found a duplicate
+      break;
+    } else {
+      // Not found
+      steps.push({
+        id: stepId++,
+        phase: 'not-found',
+        currentIndex: i,
+        currentValue,
+        seen: [...seen],
+        operation: 'VALUE NOT FOUND',
+        codeLine: 6,
+        explanation: `${currentValue} is not in the seen set. This is not a duplicate.`,
+      });
+
+      // Insert into set
+      seen.push(currentValue);
+      steps.push({
+        id: stepId++,
+        phase: 'insert',
+        currentIndex: i,
+        currentValue,
+        seen: [...seen],
+        operation: 'STORE VALUE',
+        codeLine: 10,
+        explanation: `Because ${currentValue} was not found, we store it in the seen set so that future elements can be compared against it.`,
+      });
+    }
+  }
+
+  // If we processed all elements without finding a duplicate
+  if (!steps.some(s => s.phase === 'return')) {
+    steps.push({
+      id: stepId++,
+      phase: 'return',
+      currentIndex: null,
+      currentValue: null,
+      seen: [...seen],
+      operation: 'NO DUPLICATE',
+      codeLine: 13,
+      explanation: 'We have checked all elements and found no duplicates. Return false.',
+    });
+  }
+
+  return steps;
+}
 
 export default function ContainsDuplicateOptimalVisualizer() {
+  const [inputType, setInputType] = useState<InputType>('duplicate');
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
 
+  const nums = inputs[inputType];
+  const steps = generateSteps(nums);
   const step = steps[currentStep];
 
   const handleNext = () => {
@@ -272,6 +192,12 @@ export default function ContainsDuplicateOptimalVisualizer() {
     setIsPlaying(!isPlaying);
   };
 
+  const handleInputChange = (type: InputType) => {
+    setInputType(type);
+    setCurrentStep(0);
+    setIsPlaying(false);
+  };
+
   useEffect(() => {
     if (isPlaying && currentStep < steps.length - 1) {
       const timer = setTimeout(() => {
@@ -281,26 +207,36 @@ export default function ContainsDuplicateOptimalVisualizer() {
     } else if (currentStep === steps.length - 1) {
       setIsPlaying(false);
     }
-  }, [isPlaying, currentStep, speed]);
-
-  const getOperationColor = (operation: string) => {
-    switch (operation) {
-      case 'INITIALIZE EMPTY SET': return 'bg-indigo-100 text-indigo-700 border-indigo-200';
-      case 'START LOOP': return 'bg-purple-100 text-purple-700 border-purple-200';
-      case 'READ CURRENT VALUE': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'SEARCH SET': return 'bg-pink-100 text-pink-700 border-pink-200';
-      case 'VALUE NOT FOUND': return 'bg-gray-100 text-gray-700 border-gray-200';
-      case 'STORE VALUE': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
-      case 'VALUE ALREADY EXISTS': return 'bg-rose-100 text-rose-700 border-rose-200';
-      case 'DUPLICATE FOUND': return 'bg-orange-100 text-orange-700 border-orange-200';
-      case 'INCREMENT LOOP': return 'bg-violet-100 text-violet-700 border-violet-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
-    }
-  };
+  }, [isPlaying, currentStep, speed, steps.length]);
 
   return (
     <div className="bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 py-12 px-6">
       <div className="max-w-7xl mx-auto">
+        {/* Input Selector */}
+        <div className="mb-8 flex items-center justify-center gap-4">
+          <span className="text-sm font-semibold text-gray-700">Example:</span>
+          <button
+            onClick={() => handleInputChange('duplicate')}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+              inputType === 'duplicate'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            With Duplicate [1, 2, 3, 1]
+          </button>
+          <button
+            onClick={() => handleInputChange('no-duplicate')}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+              inputType === 'no-duplicate'
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            No Duplicate [1, 2, 3, 4]
+          </button>
+        </div>
+
         {/* Header with Controls */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-6">
           <div>
@@ -308,14 +244,12 @@ export default function ContainsDuplicateOptimalVisualizer() {
             <p className="text-gray-600">Watch the hash set detect duplicates step by step</p>
           </div>
 
-          {/* Controls - Top Right */}
+          {/* Controls */}
           <div className="flex flex-col items-center lg:items-end gap-4">
-            {/* Step counter */}
             <div className="text-sm text-gray-500 font-mono">
               Step {currentStep + 1} of {steps.length}
             </div>
 
-            {/* Main controls */}
             <div className="flex items-center gap-2 flex-wrap justify-center">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -360,7 +294,6 @@ export default function ContainsDuplicateOptimalVisualizer() {
               </motion.button>
             </div>
 
-            {/* Speed control */}
             <div className="flex items-center gap-2">
               <span className="text-xs text-gray-500">Speed:</span>
               {[0.5, 1, 1.5, 2].map((s) => (
@@ -380,7 +313,7 @@ export default function ContainsDuplicateOptimalVisualizer() {
           </div>
         </div>
 
-        {/* Main Visualization Area */}
+        {/* Main Visualization */}
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 mb-8">
           {/* Array Visualization */}
           <div className="mb-8">
@@ -397,12 +330,10 @@ export default function ContainsDuplicateOptimalVisualizer() {
                     transition={{ delay: index * 0.05 }}
                     className="flex flex-col items-center"
                   >
-                    {/* Index label */}
                     <div className="text-xs text-gray-400 mb-2 font-mono">
                       Index {index}
                     </div>
                     
-                    {/* Value cell */}
                     <motion.div
                       animate={{
                         scale: isCurrent ? 1.1 : 1,
@@ -413,7 +344,6 @@ export default function ContainsDuplicateOptimalVisualizer() {
                     >
                       {num}
                       
-                      {/* Current indicator */}
                       {isCurrent && (
                         <motion.div
                           initial={{ opacity: 0, scale: 0 }}
@@ -568,7 +498,7 @@ export default function ContainsDuplicateOptimalVisualizer() {
             <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-4 border-2 border-amber-200">
               <div className="text-xs text-amber-600 font-semibold mb-1">result</div>
               <div className="text-3xl font-bold text-amber-900">
-                {step.phase === 'return' ? 'true' : '—'}
+                {step.phase === 'return' ? (step.operation === 'DUPLICATE FOUND' ? 'true' : 'false') : '—'}
               </div>
               <div className="text-xs text-amber-600 mt-1">Final answer</div>
             </div>
@@ -585,7 +515,19 @@ export default function ContainsDuplicateOptimalVisualizer() {
                 transition={{ duration: 0.3 }}
                 className="flex justify-center mb-8"
               >
-                <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${getOperationColor(step.operation)}`}>
+                <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full border-2 ${
+                  step.operation === 'INITIALIZE EMPTY SET' ? 'bg-indigo-100 text-indigo-700 border-indigo-200' :
+                  step.operation === 'START LOOP' ? 'bg-purple-100 text-purple-700 border-purple-200' :
+                  step.operation === 'READ CURRENT VALUE' ? 'bg-blue-100 text-blue-700 border-blue-200' :
+                  step.operation === 'SEARCH SET' ? 'bg-pink-100 text-pink-700 border-pink-200' :
+                  step.operation === 'VALUE NOT FOUND' ? 'bg-gray-100 text-gray-700 border-gray-200' :
+                  step.operation === 'STORE VALUE' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
+                  step.operation === 'VALUE ALREADY EXISTS' ? 'bg-rose-100 text-rose-700 border-rose-200' :
+                  step.operation === 'DUPLICATE FOUND' ? 'bg-orange-100 text-orange-700 border-orange-200' :
+                  step.operation === 'INCREMENT LOOP' ? 'bg-violet-100 text-violet-700 border-violet-200' :
+                  step.operation === 'NO DUPLICATE' ? 'bg-green-100 text-green-700 border-green-200' :
+                  'bg-gray-100 text-gray-700 border-gray-200'
+                }`}>
                   <span className="text-sm font-bold">{step.operation}</span>
                 </div>
               </motion.div>

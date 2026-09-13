@@ -4,6 +4,8 @@ import { ArrowLeft, Home, ExternalLink, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useProblems } from '../context/ProblemContext';
 import ApproachTabs, { ApproachType } from '../components/visualization/ApproachTabs';
+import ContainsDuplicateBruteVisualizer from '../components/visualization/ContainsDuplicateBruteVisualizer';
+import ContainsDuplicateBetterVisualizer from '../components/visualization/ContainsDuplicateBetterVisualizer';
 import ContainsDuplicateOptimalVisualizer from '../components/visualization/ContainsDuplicateOptimalVisualizer';
 
 export default function ContainsDuplicateWorkspace() {
@@ -286,12 +288,12 @@ public:
           )}
         </motion.div>
 
-        {/* Visualizer - Only for Optimal */}
-        {currentApproach === 'optimal' && (
-          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
-            <ContainsDuplicateOptimalVisualizer />
-          </div>
-        )}
+        {/* Visualizer - Show based on selected approach */}
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+          {currentApproach === 'brute' && <ContainsDuplicateBruteVisualizer />}
+          {currentApproach === 'better' && <ContainsDuplicateBetterVisualizer />}
+          {currentApproach === 'optimal' && <ContainsDuplicateOptimalVisualizer />}
+        </div>
 
         {/* Footer Navigation */}
         <motion.div
