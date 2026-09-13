@@ -123,18 +123,18 @@ export default function TwoSumPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-16"
         >
-          <div className="flex items-start justify-between gap-6 flex-wrap mb-6">
+          <div className="flex items-start justify-between gap-6 flex-wrap mb-8">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-4">
-                <span className="text-sm font-mono text-gray-500">01</span>
+                <span className="text-base font-mono text-gray-500">01</span>
                 <span className="text-gray-400">·</span>
-                <span className="text-sm font-medium text-gray-600">Array</span>
+                <span className="text-base font-medium text-gray-600">Array</span>
                 <span className="text-gray-400">·</span>
-                <span className="text-sm font-medium text-gray-600">Hash Map</span>
+                <span className="text-base font-medium text-gray-600">Hash Map</span>
                 <span className="text-gray-400">·</span>
-                <span className="text-sm font-medium text-emerald-600">Easy</span>
+                <span className="text-base font-medium text-emerald-600">Easy</span>
               </div>
-              <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-gray-900 mb-6">
+              <h1 className="font-sans text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-6">
                 Two Sum
               </h1>
             </div>
@@ -175,17 +175,29 @@ export default function TwoSumPage() {
                 <CheckCircle size={18} />
                 {isCompleted ? 'Completed' : 'Mark as Complete'}
               </motion.button>
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Link
+                  to="/blind75"
+                  className="flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-900 rounded-xl text-base font-semibold hover:bg-gray-200 transition-colors border border-gray-200"
+                >
+                  <ArrowLeft size={18} />
+                  Back to Library
+                </Link>
+              </motion.div>
             </div>
           </div>
 
           {/* Problem Description */}
-          <div className="space-y-4">
-            <p className="text-xl text-gray-900 leading-relaxed">
-              Given an array of integers <code className="font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded-lg text-lg">nums</code> and
-              an integer <code className="font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded-lg text-lg">target</code>,
+          <div className="space-y-6">
+            <p className="text-2xl text-gray-900 leading-relaxed">
+              Given an array of integers <code className="font-mono text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg text-2xl">nums</code> and
+              an integer <code className="font-mono text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg text-2xl">target</code>,
               return indices of the two numbers such that they add up to target.
             </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-xl text-gray-600 leading-relaxed">
               You need to find two different positions in the array whose values add up to the target.
               Return their indices, not the values themselves.
             </p>
@@ -199,7 +211,7 @@ export default function TwoSumPage() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mb-16"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Input & Output</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-8">Input & Output</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {/* Input Panel */}
             <motion.div
@@ -293,7 +305,7 @@ export default function TwoSumPage() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold text-[#0A0A0A] mb-4">Understand it through examples</h2>
+          <h2 className="text-4xl font-bold text-[#0A0A0A] mb-6">Understand it through examples</h2>
           <p className="text-xl text-[#4A4A4A] mb-10 leading-relaxed">See how the input, target, and returned indices relate to one another.</p>
           <div className="space-y-8">
             {testCases.map((tc, i) => (
@@ -357,7 +369,7 @@ export default function TwoSumPage() {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mb-16"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Constraints</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-8">Constraints</h2>
           <div className="bg-white rounded-2xl p-8 border border-blue-200 shadow-sm">
             <div className="border-l-4 border-blue-400 pl-6">
               <ul className="space-y-4">

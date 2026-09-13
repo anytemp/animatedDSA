@@ -5,7 +5,7 @@ import { ProblemProvider } from './context/ProblemContext';
 import LandingPage from './pages/LandingPage';
 import Blind75Library from './pages/Blind75Library';
 import TwoSumPage from './pages/TwoSumPage';
-import TwoSumVisualization from './pages/TwoSumVisualization';
+import TwoSumWorkspace from './pages/TwoSumWorkspace';
 import ProblemPlaceholder from './pages/ProblemPlaceholder';
 
 export default function App() {
@@ -27,7 +27,7 @@ export default function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/blind75" element={<Blind75Library />} />
             <Route path="/problem/1" element={<TwoSumPage />} />
-            <Route path="/problem/1/visualize" element={<TwoSumVisualization />} />
+            <Route path="/problem/1/visualize" element={<TwoSumWorkspace />} />
             <Route path="/problem/:id" element={<ProblemPlaceholder />} />
           </Routes>
         </div>
