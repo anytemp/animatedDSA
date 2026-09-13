@@ -8,6 +8,8 @@ import TwoSumPage from './pages/TwoSumPage';
 import TwoSumWorkspace from './pages/TwoSumWorkspace';
 import StockPage from './pages/StockPage';
 import StockWorkspace from './pages/StockWorkspace';
+import ContainsDuplicatePage from './pages/ContainsDuplicatePage';
+import ContainsDuplicateWorkspace from './pages/ContainsDuplicateWorkspace';
 import ProblemPlaceholder from './pages/ProblemPlaceholder';
 
 export default function App() {
@@ -32,6 +34,8 @@ export default function App() {
             <Route path="/problem/1/visualize" element={<TwoSumWorkspace />} />
             <Route path="/problem/2" element={<StockPage />} />
             <Route path="/problem/2/visualize" element={<StockWorkspace />} />
+            <Route path="/problem/3" element={<ContainsDuplicatePage />} />
+            <Route path="/problem/3/visualize" element={<ContainsDuplicateWorkspace />} />
             <Route path="/problem/:id" element={<ProblemPlaceholder />} />
           </Routes>
         </div>
