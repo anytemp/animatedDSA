@@ -1,21 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ivory: #FAF8F5;
-  --color-pearl: #F5F3EF;
-  --color-champagne: #F0EDE6;
-  --color-beige: #E8E4DC;
-  --color-charcoal: #1A1A1A;
-  --color-charcoal-light: #2D2D2D;
-  --color-gold: #C4A265;
-  --color-gold-muted: #D4B87A;
-  --color-lavender: #C8B8E8;
-  --color-icy-blue: #B8D4E8;
-  --color-coral: #E8C4B8;
-  --color-gray-warm: #6B6560;
-  --color-gray-light: #9B9590;
-  --font-serif: 'Instrument Serif', serif;
-  --font-sans: 'Inter', sans-serif;
+  --color-bg: #EBEBEB;
+  --color-dark: #2B253A;
+  --color-dark-light: #3D3550;
+  --color-lavender: #C5BAE0;
+  --color-lavender-light: #E3DFEE;
+  --color-lavender-muted: #D4CEE8;
+  --color-text-primary: #1A1A1A;
+  --color-text-secondary: #6B6B70;
+  --color-text-body: #4A4A4A;
+  --color-text-light: #9B9BA0;
+  --color-text-on-dark: #E3DFEE;
+  --color-border: #D0D0D5;
+  --color-border-light: #E0E0E5;
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
 * {
@@ -28,16 +27,16 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-ivory);
-  color: var(--color-charcoal);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 ::selection {
-  background-color: var(--color-gold-muted);
-  color: var(--color-charcoal);
+  background-color: var(--color-lavender);
+  color: var(--color-dark);
 }
 
 /* Grain texture overlay */
@@ -59,30 +58,30 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-pearl);
+  background: var(--color-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-beige);
+  background: var(--color-border);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gray-light);
+  background: var(--color-text-secondary);
 }
 
 /* Glass card */
 .glass-card {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(200, 195, 185, 0.4);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 24px rgba(43, 37, 58, 0.04), 0 1px 2px rgba(43, 37, 58, 0.02);
 }
 
 /* Decorative line */
 .decorative-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-beige), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
 
 /* Reduced motion */

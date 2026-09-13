@@ -5,7 +5,7 @@ import { Metrics, Features, HowItWorks, FinalCTA, Footer } from './components/Se
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-ivory">
+    <div className="relative min-h-screen bg-bg">
       {/* Grain texture overlay */}
       <div className="grain-overlay" />
 
