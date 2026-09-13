@@ -2,17 +2,15 @@ import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Search, X, ArrowRight, Filter, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { problems, TOPICS, type Problem } from '../data/problems';
+import { TOPICS, type Problem } from '../data/problems';
+import { useProblems } from '../context/ProblemContext';
 
 export default function Blind75Library() {
+  const { problems, completedCount } = useProblems();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
   const [selectedStatus, setSelectedStatus] = useState<string>('All');
-
-  const completedCount = useMemo(() => {
-    return problems.filter(p => p.status === 'Completed').length;
-  }, []);
 
   const filteredProblems = useMemo(() => {
     return problems.filter(problem => {
@@ -33,7 +31,7 @@ export default function Blind75Library() {
 
       return matchesSearch && matchesTopic && matchesDifficulty && matchesStatus;
     });
-  }, [searchQuery, selectedTopic, selectedDifficulty, selectedStatus]);
+  }, [problems, searchQuery, selectedTopic, selectedDifficulty, selectedStatus]);
 
   const hasActiveFilters = searchQuery !== '' || selectedTopic !== 'All' || selectedDifficulty !== 'All' || selectedStatus !== 'All';
 
@@ -45,36 +43,40 @@ export default function Blind75Library() {
   };
 
   return (
-    <div className="min-h-screen bg-bg pt-20">
-      {/* Hero Section */}
-      <section className="relative py-16 lg:py-24 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 right-0 w-[500px] h-[500px] rounded-full bg-lavender/10 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-lavender/5 blur-3xl" />
-        </div>
+    <div className="min-h-screen pt-20 relative overflow-hidden" style={{
+      background: 'linear-gradient(180deg, #0F0D16 0%, #171321 40%, #1F1A2E 70%, #2B253A 100%)',
+    }}>
+      {/* Subtle violet light accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full bg-lavender/5 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-lavender/3 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-dark/20 blur-3xl" />
+      </div>
 
+      {/* Hero Section */}
+      <section className="relative py-16 lg:py-24">
         <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-dark mb-4">
+            <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-lavender mb-4">
               <BookOpen size={12} />
               The Core Collection
             </span>
 
-            <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-text-primary mb-6">
+            <h1 className="font-sans text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6">
               Blind 75
             </h1>
 
-            <p className="text-lg lg:text-xl text-text-body leading-relaxed max-w-2xl mb-8">
+            <p className="text-lg lg:text-xl text-text-on-dark/80 leading-relaxed max-w-2xl mb-8">
               Build your algorithmic foundation through carefully organized problems, 
               recognizable patterns, and visual-first learning.
             </p>
 
             {/* Progress Section */}
-            <div className="glass-card rounded-2xl p-6 max-w-md">
+            <div className="bg-white/90 backdrop-blur-xl border border-border rounded-2xl p-6 max-w-md shadow-lg shadow-black/20">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-text-secondary">Progress</span>
                 <span className="text-sm font-bold text-dark">{completedCount} / 75 completed</span>
@@ -96,7 +98,7 @@ export default function Blind75Library() {
       </section>
 
       {/* Search and Filter Bar */}
-      <section className="sticky top-16 lg:top-20 z-40 bg-bg/80 backdrop-blur-xl border-b border-border/50">
+      <section className="sticky top-16 lg:top-20 z-40 bg-[#171321]/80 backdrop-blur-xl border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-4">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search Input */}
@@ -173,16 +175,16 @@ export default function Blind75Library() {
 
           {/* Results Count */}
           <div className="mt-4 flex items-center gap-2">
-            <Filter size={14} className="text-text-light" />
-            <span className="text-sm text-text-secondary">
-              Showing <span className="font-semibold text-text-primary">{filteredProblems.length}</span> of 75 problems
+            <Filter size={14} className="text-text-on-dark/50" />
+            <span className="text-sm text-text-on-dark/70">
+              Showing <span className="font-semibold text-white">{filteredProblems.length}</span> of 75 problems
             </span>
           </div>
         </div>
       </section>
 
       {/* Problem Grid */}
-      <section className="py-12 lg:py-16">
+      <section className="relative py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           {filteredProblems.length === 0 ? (
             <motion.div
@@ -190,8 +192,8 @@ export default function Blind75Library() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-20"
             >
-              <p className="text-lg text-text-secondary mb-2">No problems found</p>
-              <p className="text-sm text-text-light">Try adjusting your filters or search query</p>
+              <p className="text-lg text-text-on-dark/70 mb-2">No problems found</p>
+              <p className="text-sm text-text-on-dark/50">Try adjusting your filters or search query</p>
             </motion.div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
@@ -237,7 +239,7 @@ function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
         </span>
       </div>
 
-      <h3 className="font-sans text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug">
+      <h3 className="font-mono text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug tracking-tight">
         {problem.name}
       </h3>
 

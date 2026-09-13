@@ -128,10 +128,9 @@ function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
           </span>
         </div>
 
-        <h3 className="font-sans text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug">
-          {problem.name}
-        </h3>
-
+      <h3 className="font-mono text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug tracking-tight">
+        {problem.name}
+      </h3>
         <div className="flex items-center gap-3 mt-auto">
           <div className="flex items-center gap-1.5">
             <Icon size={12} className="text-text-light" />

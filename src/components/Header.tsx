@@ -20,14 +20,19 @@ export default function Header() {
     setMobileOpen(false);
   }, [location]);
 
+  const isLibraryPage = location.pathname === '/blind75';
+  const isProblemPage = location.pathname.startsWith('/problem');
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-bg/80 backdrop-blur-xl border-b border-border/50'
+        scrolled || isLibraryPage || isProblemPage
+          ? (isLibraryPage || isProblemPage
+              ? 'bg-[#171321]/80 backdrop-blur-xl border-b border-white/5'
+              : 'bg-bg/80 backdrop-blur-xl border-b border-border/50')
           : 'bg-transparent'
       }`}
     >
@@ -39,8 +44,10 @@ export default function Header() {
             <div className="absolute inset-1.5 rounded-full border border-dark/20 group-hover:border-dark/30 transition-colors duration-300" />
             <div className="absolute inset-3 rounded-full bg-lavender/30 group-hover:bg-lavender/50 transition-colors duration-300" />
           </div>
-          <span className="font-sans text-xl font-bold tracking-tight text-text-primary">
-            Aurora <span className="italic font-medium text-dark">Algorithms</span>
+          <span className={`font-sans text-xl font-bold tracking-tight ${
+            isLibraryPage || isProblemPage ? 'text-white' : 'text-text-primary'
+          }`}>
+            Aurora <span className="italic font-medium text-lavender">Algorithms</span>
           </span>
         </Link>
 
@@ -50,7 +57,11 @@ export default function Header() {
           {!isLandingPage && (
             <Link
               to="/"
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+              className={`text-sm font-medium transition-colors duration-200 relative group ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
             >
               Home
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
@@ -69,7 +80,11 @@ export default function Header() {
           ) : (
             <Link
               to="/"
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+              className={`text-sm font-medium transition-colors duration-200 relative group ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
             >
               Learn
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
@@ -80,7 +95,9 @@ export default function Header() {
           <Link
             to="/blind75"
             className={`text-sm font-medium transition-colors duration-200 relative group ${
-              location.pathname === '/blind75' ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+              location.pathname === '/blind75'
+                ? (isLibraryPage || isProblemPage ? 'text-white' : 'text-text-primary')
+                : (isLibraryPage || isProblemPage ? 'text-white/70 hover:text-white' : 'text-text-secondary hover:text-text-primary')
             }`}
           >
             Blind 75
@@ -101,7 +118,11 @@ export default function Header() {
           ) : (
             <Link
               to="/"
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+              className={`text-sm font-medium transition-colors duration-200 relative group ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
             >
               How It Works
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
@@ -120,7 +141,11 @@ export default function Header() {
           ) : (
             <Link
               to="/"
-              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+              className={`text-sm font-medium transition-colors duration-200 relative group ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}
             >
               Progress
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
@@ -130,12 +155,16 @@ export default function Header() {
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">
-          <button className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 px-4 py-2">
+          <button className={`text-sm font-medium transition-colors duration-200 px-4 py-2 ${
+            isLibraryPage || isProblemPage
+              ? 'text-white/70 hover:text-white'
+              : 'text-text-secondary hover:text-text-primary'
+          }`}>
             Log in
           </button>
           <Link
             to="/blind75"
-            className="text-sm font-medium text-white bg-dark hover:bg-dark-light px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-dark/10"
+            className="text-sm font-medium text-white bg-lavender hover:bg-lavender/80 px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-lavender/20"
           >
             Get Started
           </Link>
@@ -144,7 +173,9 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden p-2 text-text-primary"
+          className={`lg:hidden p-2 ${
+            isLibraryPage || isProblemPage ? 'text-white' : 'text-text-primary'
+          }`}
           aria-label="Toggle menu"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
@@ -159,14 +190,22 @@ export default function Header() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-bg/95 backdrop-blur-xl border-b border-border/50 overflow-hidden"
+            className={`lg:hidden backdrop-blur-xl border-b overflow-hidden ${
+              isLibraryPage || isProblemPage
+                ? 'bg-[#171321]/95 border-white/5'
+                : 'bg-bg/95 border-border/50'
+            }`}
           >
             <div className="px-6 py-6 flex flex-col gap-4">
               {/* Home link (only show on non-landing pages) */}
               {!isLandingPage && (
                 <Link
                   to="/"
-                  className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2"
+                  className={`text-base font-medium transition-colors py-2 ${
+                    isLibraryPage || isProblemPage
+                      ? 'text-white/70 hover:text-white'
+                      : 'text-text-secondary hover:text-text-primary'
+                  }`}
                 >
                   Home
                 </Link>
@@ -178,13 +217,21 @@ export default function Header() {
                   Learn
                 </a>
               ) : (
-                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                <Link to="/" className={`text-base font-medium transition-colors py-2 ${
+                  isLibraryPage || isProblemPage
+                    ? 'text-white/70 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
+                }`}>
                   Learn
                 </Link>
               )}
 
               {/* Blind 75 */}
-              <Link to="/blind75" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+              <Link to="/blind75" className={`text-base font-medium transition-colors py-2 ${
+                isLibraryPage || isProblemPage
+                  ? 'text-white/70 hover:text-white'
+                  : 'text-text-secondary hover:text-text-primary'
+              }`}>
                 Blind 75
               </Link>
 
@@ -194,7 +241,11 @@ export default function Header() {
                   How It Works
                 </a>
               ) : (
-                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                <Link to="/" className={`text-base font-medium transition-colors py-2 ${
+                  isLibraryPage || isProblemPage
+                    ? 'text-white/70 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
+                }`}>
                   How It Works
                 </Link>
               )}
@@ -205,18 +256,28 @@ export default function Header() {
                   Progress
                 </a>
               ) : (
-                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                <Link to="/" className={`text-base font-medium transition-colors py-2 ${
+                  isLibraryPage || isProblemPage
+                    ? 'text-white/70 hover:text-white'
+                    : 'text-text-secondary hover:text-text-primary'
+                }`}>
                   Progress
                 </Link>
               )}
 
-              <div className="pt-4 border-t border-border/50 flex flex-col gap-3">
-                <button className="text-sm font-medium text-text-secondary py-2 text-left">
+              <div className={`pt-4 border-t flex flex-col gap-3 ${
+                isLibraryPage || isProblemPage ? 'border-white/10' : 'border-border/50'
+              }`}>
+                <button className={`text-sm font-medium py-2 text-left ${
+                  isLibraryPage || isProblemPage
+                    ? 'text-white/70'
+                    : 'text-text-secondary'
+                }`}>
                   Log in
                 </button>
                 <Link
                   to="/blind75"
-                  className="text-sm font-medium text-white bg-dark px-5 py-3 rounded-full text-center"
+                  className="text-sm font-medium text-dark bg-lavender hover:bg-lavender/80 px-5 py-3 rounded-full text-center transition-all"
                 >
                   Get Started
                 </Link>

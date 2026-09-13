@@ -15,6 +15,7 @@
   --color-border: #D0D0D5;
   --color-border-light: #E0E0E5;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Inter', sans-serif;
 }
 
 * {
