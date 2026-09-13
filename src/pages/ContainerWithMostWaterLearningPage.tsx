@@ -87,16 +87,28 @@ export default function ContainerWithMostWaterLearningPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8 mb-8"
+          className="space-y-8"
         >
           {currentApproach === 'brute' && (
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Brute Force Approach</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Try every possible pair of lines. For each pair, calculate the water level using the shorter line, calculate the width, calculate the area, and update the maximum area.
-              </p>
-              <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
-                <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+            <>
+              {/* 1. Explanation */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Brute Force Approach</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  Try every possible pair of lines. For each pair, calculate the water level using the shorter line, calculate the width, calculate the area, and update the maximum area.
+                </p>
+              </div>
+
+              {/* 2. Visualization */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden">
+                <BruteForceVisualizer />
+              </div>
+
+              {/* 3. C++ Code */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">C++ Code</h3>
+                <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
 {`class Solution {
 public:
     int maxArea(vector<int>& height) {
@@ -115,31 +127,49 @@ public:
         return maxArea;
     }
 };`}
-                </pre>
-              </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
-                  <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
-                  <p className="text-sm text-blue-700">Two nested loops check every pair</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
-                  <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
-                  <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
-                  <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </pre>
                 </div>
               </div>
-            </div>
+
+              {/* 4. Complexity Analysis */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
+                    <p className="text-sm text-blue-700">Two nested loops check every pair</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
 
           {currentApproach === 'better' && (
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Improved Brute Force — Still O(n²)</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                This is an optional intermediate approach. The code is the same as brute force, but we can add simple optimizations like early termination hints. However, the asymptotic complexity remains O(n²). The standard optimal solution is the two-pointer method.
-              </p>
-              <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
-                <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+            <>
+              {/* 1. Explanation */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Improved Brute Force — Still O(n²)</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  This is an optional intermediate approach. The code is the same as brute force, but we can add simple optimizations like early termination hints. However, the asymptotic complexity remains O(n²). The standard optimal solution is the two-pointer method.
+                </p>
+              </div>
+
+              {/* 2. Visualization */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden">
+                <BetterVisualizer />
+              </div>
+
+              {/* 3. C++ Code */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">C++ Code</h3>
+                <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
 {`class Solution {
 public:
     int maxArea(vector<int>& height) {
@@ -158,31 +188,49 @@ public:
         return maxArea;
     }
 };`}
-                </pre>
-              </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
-                  <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
-                  <p className="text-sm text-blue-700">Still O(n²) - no asymptotic improvement</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
-                  <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
-                  <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
-                  <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </pre>
                 </div>
               </div>
-            </div>
+
+              {/* 4. Complexity Analysis */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
+                    <p className="text-sm text-blue-700">Still O(n²) - no asymptotic improvement</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
 
           {currentApproach === 'optimal' && (
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Optimal: Two-Pointer Approach</h3>
-              <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                Start with the widest possible container using the first and last lines. Calculate its area. The shorter line limits the water level, so moving the taller line cannot improve the result. Therefore, move the shorter line inward and repeat.
-              </p>
-              <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
-                <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+            <>
+              {/* 1. Explanation */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Optimal: Two-Pointer Approach</h3>
+                <p className="text-lg text-gray-700 leading-relaxed">
+                  Start with the widest possible container using the first and last lines. Calculate its area. The shorter line limits the water level, so moving the taller line cannot improve the result. Therefore, move the shorter line inward and repeat.
+                </p>
+              </div>
+
+              {/* 2. Visualization */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden">
+                <OptimalVisualizer />
+              </div>
+
+              {/* 3. C++ Code */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">C++ Code</h3>
+                <div className="bg-gray-900 rounded-2xl p-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
 {`class Solution {
 public:
     int maxArea(vector<int>& height) {
@@ -207,34 +255,28 @@ public:
         return maxArea;
     }
 };`}
-                </pre>
-              </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
-                  <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
-                  <div className="text-3xl font-bold text-blue-900 mb-2">O(n)</div>
-                  <p className="text-sm text-blue-700">Single pass with two pointers</p>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
-                  <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
-                  <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
-                  <p className="text-sm text-purple-700">Only three variables used</p>
+                  </pre>
                 </div>
               </div>
-            </div>
-          )}
-        </motion.div>
 
-        {/* Visualization */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden"
-        >
-          {currentApproach === 'brute' && <BruteForceVisualizer />}
-          {currentApproach === 'better' && <BetterVisualizer />}
-          {currentApproach === 'optimal' && <OptimalVisualizer />}
+              {/* 4. Complexity Analysis */}
+              <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Complexity Analysis</h3>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n)</div>
+                    <p className="text-sm text-blue-700">Single pass with two pointers</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only three variables used</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
         </motion.div>
       </div>
     </div>
