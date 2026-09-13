@@ -293,51 +293,54 @@ export default function TwoSumPage() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mb-16"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Understand it through examples</h2>
-          <p className="text-lg text-gray-600 mb-8">See how the input, target, and returned indices relate to one another.</p>
-          <div className="grid gap-6">
+          <h2 className="text-3xl font-bold text-[#0A0A0A] mb-4">Understand it through examples</h2>
+          <p className="text-xl text-[#4A4A4A] mb-10 leading-relaxed">See how the input, target, and returned indices relate to one another.</p>
+          <div className="space-y-8">
             {testCases.map((tc, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.6 + i * 0.1 }}
-                className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm hover:border-blue-200 transition-all duration-300"
+                transition={{ duration: 0.5, delay: 0.6 + i * 0.15 }}
+                className="bg-white rounded-3xl p-10 border-2 border-[#DCEBFA] shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-sm font-mono font-bold text-gray-400">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center">
+                    <span className="text-lg font-bold text-white">{i + 1}</span>
+                  </div>
+                  <span className="text-xl font-bold text-[#0A0A0A]">
                     Example {i + 1}
                   </span>
                 </div>
-                <div className="grid sm:grid-cols-3 gap-6">
+                <div className="grid md:grid-cols-3 gap-8">
                   <div>
-                    <div className="text-sm font-bold text-gray-500 mb-3">
+                    <div className="text-base font-semibold text-[#4A4A4A] mb-4 uppercase tracking-wide">
                       Input
                     </div>
-                    <div className="font-mono text-base text-gray-900 space-y-2">
+                    <div className="font-mono text-lg text-[#0A0A0A] space-y-3 leading-relaxed">
                       <div>
-                        <span className="text-gray-500">nums</span> ={' '}
+                        <span className="text-[#6B6B6B]">nums</span> ={' '}
                         <span className="text-blue-600 font-bold">[{tc.nums.join(', ')}]</span>
                       </div>
                       <div>
-                        <span className="text-gray-500">target</span> ={' '}
+                        <span className="text-[#6B6B6B]">target</span> ={' '}
                         <span className="text-blue-600 font-bold">{tc.target}</span>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-gray-500 mb-3">
+                    <div className="text-base font-semibold text-[#4A4A4A] mb-4 uppercase tracking-wide">
                       Output
                     </div>
-                    <div className="font-mono text-base text-emerald-600 font-bold">
+                    <div className="font-mono text-xl text-emerald-600 font-bold leading-relaxed">
                       [{tc.output.join(', ')}]
                     </div>
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-gray-500 mb-3">
+                    <div className="text-base font-semibold text-[#4A4A4A] mb-4 uppercase tracking-wide">
                       Explanation
                     </div>
-                    <p className="text-base text-gray-700 leading-relaxed">
+                    <p className="text-lg text-[#0A0A0A] leading-relaxed">
                       {tc.explanation}
                     </p>
                   </div>
