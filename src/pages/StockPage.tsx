@@ -103,7 +103,7 @@ export default function StockPage() {
       </div>
 
       {/* Main Content */}
-      <div className="relative max-w-6xl mx-auto px-6 lg:px-12 py-12 lg:py-16">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 py-12 lg:py-16">
         {/* Problem Title with Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -111,24 +111,30 @@ export default function StockPage() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-16"
         >
-          <div className="flex items-start justify-between gap-6 flex-wrap mb-8">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-base font-mono text-gray-500">02</span>
-                <span className="text-gray-400">·</span>
-                <span className="text-base font-medium text-gray-600">Array</span>
-                <span className="text-gray-400">·</span>
-                <span className="text-base font-medium text-gray-600">Sliding Window</span>
-                <span className="text-gray-400">·</span>
-                <span className="text-base font-medium text-emerald-600">Easy</span>
-              </div>
-              <h1 className="font-sans text-6xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-gray-900 mb-6">
-                Best Time to Buy and Sell Stock
-              </h1>
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-base font-mono text-gray-500">02</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-base font-medium text-gray-600">Array</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-base font-medium text-gray-600">Sliding Window</span>
+              <span className="text-gray-400">·</span>
+              <span className="text-base font-medium text-emerald-600">Easy</span>
             </div>
+            <h1 
+              className="font-sans font-bold tracking-tight text-gray-900 mb-6"
+              style={{
+                fontSize: 'clamp(2.5rem, 8vw, 6rem)',
+                lineHeight: '1.1',
+                wordBreak: 'break-word'
+              }}
+            >
+              Best Time to Buy and Sell Stock
+            </h1>
+          </div>
 
-            {/* Action Buttons */}
-            <div className="flex items-center gap-3 flex-wrap">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 flex-wrap mb-8">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -169,7 +175,6 @@ export default function StockPage() {
                   Back to Library
                 </Link>
               </motion.div>
-            </div>
           </div>
 
           {/* Problem Description */}

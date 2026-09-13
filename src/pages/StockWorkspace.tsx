@@ -7,12 +7,14 @@ import ApproachTabs, { ApproachType } from '../components/visualization/Approach
 import StockBruteForceVisualizer from '../components/visualization/StockBruteForceVisualizer';
 import StockBetterApproachVisualizer from '../components/visualization/StockBetterApproachVisualizer';
 import StockOptimalApproachVisualizer from '../components/visualization/StockOptimalApproachVisualizer';
+import StockMinimalVisualization from '../components/visualization/StockMinimalVisualization';
 
 export default function StockWorkspace() {
   const { updateProblemStatus, getProblem } = useProblems();
   const problem = getProblem(2);
   const [isCompleted, setIsCompleted] = useState(problem?.status === 'Completed');
   const [currentApproach, setCurrentApproach] = useState<ApproachType>('brute');
+  const [visualizationMode, setVisualizationMode] = useState<'current' | 'minimal'>('minimal');
 
   const handleMarkComplete = () => {
     updateProblemStatus(2, 'Completed');
@@ -197,10 +199,48 @@ export default function StockWorkspace() {
           )}
         </motion.div>
 
+        {/* Visualization Mode Toggle (only for optimal approach) */}
+        {currentApproach === 'optimal' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="mb-8 flex items-center justify-center gap-4"
+          >
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-2 flex items-center gap-2">
+              <button
+                onClick={() => setVisualizationMode('minimal')}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                  visualizationMode === 'minimal'
+                    ? 'bg-purple-500 text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                ✨ Minimal Motion Graphics
+              </button>
+              <button
+                onClick={() => setVisualizationMode('current')}
+                className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                  visualizationMode === 'current'
+                    ? 'bg-purple-500 text-white'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                📊 Current Visualization
+              </button>
+            </div>
+          </motion.div>
+        )}
+
         {/* Visualizer */}
         {currentApproach === 'brute' && <StockBruteForceVisualizer />}
         {currentApproach === 'better' && <StockBetterApproachVisualizer />}
-        {currentApproach === 'optimal' && <StockOptimalApproachVisualizer />}
+        {currentApproach === 'optimal' && visualizationMode === 'minimal' && (
+          <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+            <StockMinimalVisualization />
+          </div>
+        )}
+        {currentApproach === 'optimal' && visualizationMode === 'current' && <StockOptimalApproachVisualizer />}
 
         {/* Footer Navigation */}
         <motion.div
