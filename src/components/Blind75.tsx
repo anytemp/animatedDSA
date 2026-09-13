@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Hash, Layers, Zap, Circle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface Problem {
   number: string;
@@ -91,13 +92,13 @@ export default function Blind75() {
           transition={{ duration: 0.6 }}
           className="flex justify-center"
         >
-          <a
-            href="#blind75"
+          <Link
+            to="/blind75"
             className="group inline-flex items-center gap-3 bg-dark text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-dark-light transition-all duration-300 hover:shadow-xl hover:shadow-dark/10"
           >
             View all 75 problems
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -106,42 +107,47 @@ export default function Blind75() {
 
 function ProblemCard({ problem, index }: { problem: Problem; index: number }) {
   const Icon = topicIcons[problem.topic] || Hash;
+  const problemId = parseInt(problem.number);
 
   return (
-    <motion.button
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="glass-card rounded-2xl p-6 text-left group cursor-pointer hover:border-lavender/30 hover:shadow-lg hover:shadow-lavender/10 transition-all duration-300"
     >
-      <div className="flex items-start justify-between mb-4">
-        <span className="text-xs font-mono text-text-light">{problem.number}</span>
-        <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${difficultyColors[problem.difficulty]}`}>
-          {problem.difficulty}
-        </span>
-      </div>
-
-      <h3 className="font-sans text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug">
-        {problem.name}
-      </h3>
-
-      <div className="flex items-center gap-3 mt-auto">
-        <div className="flex items-center gap-1.5">
-          <Icon size={12} className="text-text-light" />
-          <span className="text-xs text-text-secondary">{problem.topic}</span>
+      <Link
+        to={`/problem/${problemId}`}
+        className="glass-card rounded-2xl p-6 text-left group cursor-pointer hover:border-lavender/30 hover:shadow-lg hover:shadow-lavender/10 transition-all duration-300 block"
+      >
+        <div className="flex items-start justify-between mb-4">
+          <span className="text-xs font-mono text-text-light">{problem.number}</span>
+          <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${difficultyColors[problem.difficulty]}`}>
+            {problem.difficulty}
+          </span>
         </div>
-        <span className="text-border">·</span>
-        <span className="text-xs text-text-light font-mono">{problem.pattern}</span>
-      </div>
 
-      <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between">
-        <span className="text-[10px] uppercase tracking-wider text-text-light font-semibold">
-          Not started
-        </span>
-        <ArrowRight size={14} className="text-border group-hover:text-dark group-hover:translate-x-0.5 transition-all duration-200" />
-      </div>
-    </motion.button>
+        <h3 className="font-sans text-lg font-semibold text-text-primary mb-3 group-hover:text-dark transition-colors duration-200 leading-snug">
+          {problem.name}
+        </h3>
+
+        <div className="flex items-center gap-3 mt-auto">
+          <div className="flex items-center gap-1.5">
+            <Icon size={12} className="text-text-light" />
+            <span className="text-xs text-text-secondary">{problem.topic}</span>
+          </div>
+          <span className="text-border">·</span>
+          <span className="text-xs text-text-light font-mono">{problem.pattern}</span>
+        </div>
+
+        <div className="mt-4 pt-3 border-t border-border/40 flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-wider text-text-light font-semibold">
+            Not started
+          </span>
+          <ArrowRight size={14} className="text-border group-hover:text-dark group-hover:translate-x-0.5 transition-all duration-200" />
+        </div>
+      </Link>
+    </motion.div>
   );
 }

@@ -1,40 +1,32 @@
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Blind75 from './components/Blind75';
-import { Metrics, Features, HowItWorks, FinalCTA, Footer } from './components/Sections';
+import ScrollToTop from './components/ScrollToTop';
+import LandingPage from './pages/LandingPage';
+import Blind75Library from './pages/Blind75Library';
+import TwoSumPage from './pages/TwoSumPage';
+import ProblemPlaceholder from './pages/ProblemPlaceholder';
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-bg">
-      {/* Grain texture overlay */}
-      <div className="grain-overlay" />
+    <HashRouter>
+      <div className="relative min-h-screen bg-bg">
+        {/* Grain texture overlay */}
+        <div className="grain-overlay" />
 
-      {/* Header */}
-      <Header />
+        {/* Scroll to top on route change */}
+        <ScrollToTop />
 
-      {/* Main content */}
-      <main>
-        {/* Hero Section */}
-        <Hero />
+        {/* Header */}
+        <Header />
 
-        {/* Metrics Strip */}
-        <Metrics />
-
-        {/* Features */}
-        <Features />
-
-        {/* Blind 75 Featured Section */}
-        <Blind75 />
-
-        {/* How It Works */}
-        <HowItWorks />
-
-        {/* Final CTA */}
-        <FinalCTA />
-      </main>
-
-      {/* Footer */}
-      <Footer />
-    </div>
+        {/* Routes */}
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/blind75" element={<Blind75Library />} />
+          <Route path="/problem/1" element={<TwoSumPage />} />
+          <Route path="/problem/:id" element={<ProblemPlaceholder />} />
+        </Routes>
+      </div>
+    </HashRouter>
   );
 }

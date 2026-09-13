@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Eye, Code2, Target, BookOpen, ArrowRight, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 /* ─── METRICS STRIP ─── */
 export function Metrics() {
@@ -217,13 +218,13 @@ export function FinalCTA() {
             <span className="italic font-medium text-dark">Start seeing</span> how they work.
           </h2>
 
-          <a
-            href="#blind75"
+          <Link
+            to="/blind75"
             className="group inline-flex items-center gap-3 bg-dark text-white px-8 py-4 rounded-full text-sm font-semibold hover:bg-dark-light transition-all duration-300 hover:shadow-xl hover:shadow-dark/10"
           >
             Start with Blind 75
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
@@ -258,7 +259,7 @@ export function Footer() {
             <h4 className="text-xs font-semibold tracking-widest uppercase text-text-light mb-4">Navigate</h4>
             <ul className="space-y-3">
               <li><a href="#features" className="text-sm text-text-secondary hover:text-text-primary transition-colors">Learn</a></li>
-              <li><a href="#blind75" className="text-sm text-text-secondary hover:text-text-primary transition-colors">Blind 75</a></li>
+              <li><Link to="/blind75" className="text-sm text-text-secondary hover:text-text-primary transition-colors">Blind 75</Link></li>
               <li><a href="#metrics" className="text-sm text-text-secondary hover:text-text-primary transition-colors">Progress</a></li>
               <li><a href="#" className="text-sm text-text-secondary hover:text-text-primary transition-colors">About</a></li>
             </ul>
@@ -271,12 +272,12 @@ export function Footer() {
               <button className="text-sm text-text-secondary hover:text-text-primary transition-colors text-left">
                 Log in
               </button>
-              <a
-                href="#blind75"
+              <Link
+                to="/blind75"
                 className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-dark hover:bg-dark-light px-5 py-2.5 rounded-full transition-all duration-300 w-fit"
               >
                 Get Started
-              </a>
+              </Link>
             </div>
           </div>
         </div>

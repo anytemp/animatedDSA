@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const floatingElements = [
   { label: 'Compare', x: '12%', y: '20%', delay: 0.3 },
@@ -96,13 +97,13 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.8 }}
               className="flex flex-wrap gap-4"
             >
-              <a
-                href="#blind75"
+              <Link
+                to="/blind75"
                 className="group inline-flex items-center gap-3 bg-dark text-white px-7 py-4 rounded-full text-sm font-semibold hover:bg-dark-light transition-all duration-300 hover:shadow-xl hover:shadow-dark/10"
               >
                 Explore Blind 75
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform duration-200" />
-              </a>
+              </Link>
               <a
                 href="#how-it-works"
                 className="group inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm border border-border text-text-primary px-7 py-4 rounded-full text-sm font-semibold hover:bg-white hover:border-lavender/40 transition-all duration-300"

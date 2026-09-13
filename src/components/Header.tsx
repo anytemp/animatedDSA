@@ -1,23 +1,24 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-
-const navLinks = [
-  { label: 'Learn', href: '#features' },
-  { label: 'Blind 75', href: '#blind75' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Progress', href: '#metrics' },
-];
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
 
   return (
     <motion.header
@@ -32,7 +33,7 @@ export default function Header() {
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-12 h-16 lg:h-20 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-3 group">
           <div className="relative w-8 h-8">
             <div className="absolute inset-0 rounded-full border border-lavender/40 group-hover:border-lavender/70 transition-colors duration-300" />
             <div className="absolute inset-1.5 rounded-full border border-dark/20 group-hover:border-dark/30 transition-colors duration-300" />
@@ -41,20 +42,90 @@ export default function Header() {
           <span className="font-sans text-xl font-bold tracking-tight text-text-primary">
             Aurora <span className="italic font-medium text-dark">Algorithms</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
+          {/* Home link (only show on non-landing pages) */}
+          {!isLandingPage && (
+            <Link
+              to="/"
               className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
             >
-              {link.label}
+              Home
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
+
+          {/* Learn - hash link on landing page, or navigate to landing page */}
+          {isLandingPage ? (
+            <a
+              href="#features"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              Learn
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
             </a>
-          ))}
+          ) : (
+            <Link
+              to="/"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              Learn
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
+
+          {/* Blind 75 */}
+          <Link
+            to="/blind75"
+            className={`text-sm font-medium transition-colors duration-200 relative group ${
+              location.pathname === '/blind75' ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
+            }`}
+          >
+            Blind 75
+            <span className={`absolute -bottom-1 left-0 h-px bg-lavender transition-all duration-300 ${
+              location.pathname === '/blind75' ? 'w-full' : 'w-0 group-hover:w-full'
+            }`} />
+          </Link>
+
+          {/* How It Works - hash link on landing page, or navigate to landing page */}
+          {isLandingPage ? (
+            <a
+              href="#how-it-works"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              How It Works
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </a>
+          ) : (
+            <Link
+              to="/"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              How It Works
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
+
+          {/* Progress - hash link on landing page, or navigate to landing page */}
+          {isLandingPage ? (
+            <a
+              href="#metrics"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              Progress
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </a>
+          ) : (
+            <Link
+              to="/"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 relative group"
+            >
+              Progress
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-lavender group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
         </div>
 
         {/* Desktop Actions */}
@@ -62,12 +133,12 @@ export default function Header() {
           <button className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors duration-200 px-4 py-2">
             Log in
           </button>
-          <a
-            href="#blind75"
+          <Link
+            to="/blind75"
             className="text-sm font-medium text-white bg-dark hover:bg-dark-light px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-dark/10"
           >
             Get Started
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
@@ -91,27 +162,64 @@ export default function Header() {
             className="lg:hidden bg-bg/95 backdrop-blur-xl border-b border-border/50 overflow-hidden"
           >
             <div className="px-6 py-6 flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
+              {/* Home link (only show on non-landing pages) */}
+              {!isLandingPage && (
+                <Link
+                  to="/"
                   className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2"
                 >
-                  {link.label}
+                  Home
+                </Link>
+              )}
+
+              {/* Learn */}
+              {isLandingPage ? (
+                <a href="#features" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  Learn
                 </a>
-              ))}
+              ) : (
+                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  Learn
+                </Link>
+              )}
+
+              {/* Blind 75 */}
+              <Link to="/blind75" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                Blind 75
+              </Link>
+
+              {/* How It Works */}
+              {isLandingPage ? (
+                <a href="#how-it-works" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  How It Works
+                </a>
+              ) : (
+                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  How It Works
+                </Link>
+              )}
+
+              {/* Progress */}
+              {isLandingPage ? (
+                <a href="#metrics" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  Progress
+                </a>
+              ) : (
+                <Link to="/" className="text-base font-medium text-text-secondary hover:text-text-primary transition-colors py-2">
+                  Progress
+                </Link>
+              )}
+
               <div className="pt-4 border-t border-border/50 flex flex-col gap-3">
                 <button className="text-sm font-medium text-text-secondary py-2 text-left">
                   Log in
                 </button>
-                <a
-                  href="#blind75"
-                  onClick={() => setMobileOpen(false)}
+                <Link
+                  to="/blind75"
                   className="text-sm font-medium text-white bg-dark px-5 py-3 rounded-full text-center"
                 >
                   Get Started
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
