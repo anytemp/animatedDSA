@@ -1,14 +1,22 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useProblems } from '../context/ProblemContext';
+import BruteForceVisualizer from '../components/visualization/ContainerBruteForceVisualizer';
+import BetterVisualizer from '../components/visualization/ContainerBetterVisualizer';
+import OptimalVisualizer from '../components/visualization/ContainerOptimalVisualizer';
 
 export default function ContainerWithMostWaterPage() {
   const { isAuthenticated } = useAuth();
+  const { updateProblemStatus, getProblem } = useProblems();
   const navigate = useNavigate();
+  const problem = getProblem(10);
+  const [isCompleted, setIsCompleted] = useState(problem?.status === 'Completed');
   const [selectedLeft, setSelectedLeft] = useState(1);
   const [selectedRight, setSelectedRight] = useState(8);
+  const [currentApproach, setCurrentApproach] = useState<'brute' | 'better' | 'optimal'>('brute');
 
   const height = [1, 8, 6, 2, 5, 4, 8, 3, 7];
   
@@ -16,12 +24,13 @@ export default function ContainerWithMostWaterPage() {
   const width = selectedRight - selectedLeft;
   const area = waterHeight * width;
 
-  const handleStartLearning = () => {
+  const handleMarkComplete = () => {
     if (!isAuthenticated) {
       navigate('/login');
       return;
     }
-    navigate('/problem/10/visualize');
+    updateProblemStatus(10, 'Completed');
+    setIsCompleted(true);
   };
 
   return (
@@ -330,18 +339,8 @@ export default function ContainerWithMostWaterPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
-          className="flex flex-wrap gap-4"
+          className="flex flex-wrap gap-4 mb-16"
         >
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleStartLearning}
-            className="flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-xl text-lg font-semibold hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/10"
-          >
-            Start Learning
-            <ArrowRight size={20} />
-          </motion.button>
-          
           <motion.a
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -353,6 +352,217 @@ export default function ContainerWithMostWaterPage() {
             Practice on LeetCode
             <ExternalLink size={20} />
           </motion.a>
+          
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleMarkComplete}
+            className={`flex items-center gap-2 px-8 py-4 rounded-xl text-lg font-semibold transition-colors ${
+              isCompleted
+                ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-300'
+                : 'bg-gray-900 text-white hover:bg-gray-800'
+            }`}
+          >
+            <CheckCircle size={20} />
+            {isCompleted ? 'Completed' : 'Mark as Complete'}
+          </motion.button>
+          
+          <Link
+            to="/blind75"
+            className="flex items-center gap-2 px-8 py-4 bg-white text-gray-900 rounded-xl text-lg font-semibold hover:bg-gray-50 transition-colors border-2 border-gray-200"
+          >
+            <ArrowRight size={20} className="rotate-180" />
+            Back to Library
+          </Link>
+        </motion.div>
+
+        {/* Learn the Solution Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 1.2 }}
+          className="border-t-4 border-gray-900 pt-16"
+        >
+          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">Learn the Solution</h2>
+          
+          {/* Approach Tabs */}
+          <div className="flex gap-4 mb-8 justify-center flex-wrap">
+            <button
+              onClick={() => setCurrentApproach('brute')}
+              className={`px-6 py-3 rounded-xl text-lg font-semibold transition-all ${
+                currentApproach === 'brute'
+                  ? 'bg-gray-900 text-white shadow-lg'
+                  : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-400'
+              }`}
+            >
+              Brute Force
+            </button>
+            <button
+              onClick={() => setCurrentApproach('better')}
+              className={`px-6 py-3 rounded-xl text-lg font-semibold transition-all ${
+                currentApproach === 'better'
+                  ? 'bg-gray-900 text-white shadow-lg'
+                  : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-400'
+              }`}
+            >
+              Better / Improved
+            </button>
+            <button
+              onClick={() => setCurrentApproach('optimal')}
+              className={`px-6 py-3 rounded-xl text-lg font-semibold transition-all ${
+                currentApproach === 'optimal'
+                  ? 'bg-gray-900 text-white shadow-lg'
+                  : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-gray-400'
+              }`}
+            >
+              Optimal: Two Pointers
+            </button>
+          </div>
+
+          {/* Approach Content */}
+          <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 p-8 mb-8">
+            {currentApproach === 'brute' && (
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Brute Force Approach</h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                  Try every possible pair of lines. For each pair, calculate the water level using the shorter line, calculate the width, calculate the area, and update the maximum area.
+                </p>
+                <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+{`class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int maxArea = 0;
+
+        for (int left = 0; left < height.size(); left++) {
+            for (int right = left + 1; right < height.size(); right++) {
+                int waterHeight = min(height[left], height[right]);
+                int width = right - left;
+                int area = waterHeight * width;
+
+                maxArea = max(maxArea, area);
+            }
+        }
+
+        return maxArea;
+    }
+};`}
+                  </pre>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
+                    <p className="text-sm text-blue-700">Two nested loops check every pair</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentApproach === 'better' && (
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Improved Brute Force — Still O(n²)</h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                  This is an optional intermediate approach. The code is the same as brute force, but we can add simple optimizations like early termination hints. However, the asymptotic complexity remains O(n²). The standard optimal solution is the two-pointer method.
+                </p>
+                <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+{`class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int maxArea = 0;
+
+        for (int left = 0; left < height.size(); left++) {
+            for (int right = left + 1; right < height.size(); right++) {
+                int waterHeight = min(height[left], height[right]);
+                int width = right - left;
+                int area = waterHeight * width;
+
+                maxArea = max(maxArea, area);
+            }
+        }
+
+        return maxArea;
+    }
+};`}
+                  </pre>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n²)</div>
+                    <p className="text-sm text-blue-700">Still O(n²) - no asymptotic improvement</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only a few variables used</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {currentApproach === 'optimal' && (
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Optimal: Two-Pointer Approach</h3>
+                <p className="text-lg text-gray-700 leading-relaxed mb-6">
+                  Start with the widest possible container using the first and last lines. Calculate its area. The shorter line limits the water level, so moving the taller line cannot improve the result. Therefore, move the shorter line inward and repeat.
+                </p>
+                <div className="bg-gray-900 rounded-2xl p-6 mb-6 overflow-x-auto">
+                  <pre className="text-sm font-mono text-gray-100 leading-relaxed">
+{`class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int maxArea = 0;
+        int left = 0;
+        int right = height.size() - 1;
+
+        while (left < right) {
+            int waterHeight = min(height[left], height[right]);
+            int width = right - left;
+            int area = waterHeight * width;
+
+            maxArea = max(maxArea, area);
+
+            if (height[left] < height[right]) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+
+        return maxArea;
+    }
+};`}
+                  </pre>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6 border-2 border-blue-200">
+                    <div className="text-sm text-blue-600 font-semibold mb-2">Time Complexity</div>
+                    <div className="text-3xl font-bold text-blue-900 mb-2">O(n)</div>
+                    <p className="text-sm text-blue-700">Single pass with two pointers</p>
+                  </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 border-2 border-purple-200">
+                    <div className="text-sm text-purple-600 font-semibold mb-2">Space Complexity</div>
+                    <div className="text-3xl font-bold text-purple-900 mb-2">O(1)</div>
+                    <p className="text-sm text-purple-700">Only three variables used</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Visualization */}
+          <div className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden">
+            {currentApproach === 'brute' && <BruteForceVisualizer />}
+            {currentApproach === 'better' && <BetterVisualizer />}
+            {currentApproach === 'optimal' && <OptimalVisualizer />}
+          </div>
         </motion.div>
       </div>
     </div>
